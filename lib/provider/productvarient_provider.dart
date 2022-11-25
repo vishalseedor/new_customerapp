@@ -115,18 +115,18 @@ class ProductVarientProvider with ChangeNotifier {
 
       var response = await http.get(
         Uri.parse(
-            "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location'}&userid=11563&domain=[('product_variant_ids','=',[$productvarientid])]"),
+            "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','standard_price_tax_included','price_included'}&userid=11563&domain=[('product_variant_ids','=',[$productvarientid])]"),
         headers: headers,
       );
       print(
-          "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location'}&userid=11563&domain=[('product_variant_ids','=',[$productvarientid])]");
+          "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','standard_price_tax_included','price_included'}&userid=11563&domain=[('product_variant_ids','=',[$productvarientid])]");
 
       print(response.body + 'product response');
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body);
         for (var i = 0; i < extractedData.length; i++) {
           print(extractedData[i]['display_name']);
-          double price = extractedData[i]['list_price'];
+          double price = extractedData[i]['standard_price_tax_included'];
           print('bool 1 is loading --->');
 
           final imageData = extractedData[i]['image_location'].toString();
@@ -150,7 +150,8 @@ class ProductVarientProvider with ChangeNotifier {
               subtitle: 'food',
               timer: 40,
               varient: extractedData[i]['product_variant_id'][0],
-              title: extractedData[i]['display_name'].toString()));
+              title: extractedData[i]['display_name'].toString(),
+              taxtext: extractedData[i]['price_included'].toString()));
         }
         _product = _loadedProduct;
         _loadingSpinner = false;

@@ -72,6 +72,7 @@ class _CartProductDesignState extends State<CartProductDesign> {
                                   cart.cartTotalProductdata[widget.index].price,
                               style: Theme.of(context).textTheme.subtitle2,
                             ),
+
                             // Text('Price excluded',
                             //     style: TextStyle(fontSize: 12))
                             // Text(cart.cartTotalProductdata[widget.index]

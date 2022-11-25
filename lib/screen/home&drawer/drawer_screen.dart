@@ -138,7 +138,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               drawerIcon('My Cart', Icons.shopping_cart_outlined, () {
                 navigation.currentIndex = 2;
               }),
-              drawerIcon('My Favourite', Icons.favorite_border_outlined, () {
+              drawerIcon('My Favourites', Icons.favorite_border_outlined, () {
                 navigation.currentIndex = 1;
               }),
               drawerIcon('Add Address', Icons.add_location, () {
@@ -147,7 +147,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               drawerIcon('My Address', Icons.location_history_outlined, () {
                 Navigator.of(context).pushNamed(MyAddressScreen.routeName);
               }),
-              drawerIcon('My Order', Icons.shopping_cart_outlined, () {
+              drawerIcon('My Orders', Icons.shopping_cart_outlined, () {
                 Navigator.of(context).pushNamed(OrderScreen.routeName);
               }),
               SizedBox(

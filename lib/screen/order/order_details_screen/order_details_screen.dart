@@ -53,6 +53,7 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
     final data = Provider.of<CartProvider>(context, listen: false);
     final order = Provider.of<OrderProvider>(context);
     final orderData = order.findById(orderId);
+
     // final cart = Provider.of<CartProvider>(context);
     // final review = Provider.of<ReviewProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
@@ -70,7 +71,7 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                 Icons.arrow_back_outlined,
                 color: CustomColor.blackcolor,
               )),
-          title: const Text('Order Detail'),
+          title: const Text('Order Details'),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -261,7 +262,7 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                             ),
                           ),
                           Text(
-                            'Inprocess',
+                            'Inprogress',
                             style: orderData.deliveryStatus == 'Inprogress'
                                 ? Theme.of(context).textTheme.subtitle1
                                 : Theme.of(context).textTheme.headline5,
@@ -312,10 +313,12 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                     context: context),
                 orderDetails(
                     title: 'Date',
-                    subtitle: orderData.datetime,
+                    subtitle: orderData.datetime.substring(0, 10),
                     context: context),
                 orderDetails(
-                    title: 'Phone Number', subtitle: '', context: context),
+                    title: 'Phone Number',
+                    subtitle: orderData.address.phoneNumber,
+                    context: context),
                 orderDetails(
                     title: 'Delivery to',
                     subtitle: orderData.address.name +

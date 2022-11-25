@@ -16,4 +16,5 @@ class CustomColor {
   static const white200 = Color(0xffFBFBFB);
   static const white300 = Color(0xffF5F5F8);
   static const darkred = Color(0xff8A0000);
+  static const bluecolor = Color(0xff1a237e);
 }

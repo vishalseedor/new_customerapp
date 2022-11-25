@@ -41,7 +41,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 Icons.arrow_back_outlined,
                 color: CustomColor.blackcolor,
               )),
-          title: const Text('Ordered Product'),
+          title: const Text('My Orders'),
         ),
         body: loading.islOading
             ? const Center(

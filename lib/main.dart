@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'CUSTOMER APP',
         theme: CustomThemeData().themeDataOne(context),
         themeMode: ThemeMode.light,
         home: const SplashScreen(),

@@ -17,6 +17,7 @@ class OrderModel with ChangeNotifier {
   final Uint8List imageUrl;
   String deliveryStatus;
   final String datetime;
+  final String phoneNumber;
 
   OrderModel({
     @required this.id,
@@ -30,5 +31,6 @@ class OrderModel with ChangeNotifier {
     @required this.deliveryStatus,
     @required this.address,
     @required this.imageUrl,
+    @required this.phoneNumber,
   });
 }

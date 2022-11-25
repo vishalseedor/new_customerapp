@@ -142,7 +142,7 @@ class AddressProvider with ChangeNotifier {
       print('http://eiuat.seedors.com:8290/customer-app/create-address');
       if (response.statusCode == 200) {
         snackBar.successsnackbar(
-            context: context, text: 'Address Added successfull');
+            context: context, text: 'Address Updated Successfully');
       } else {
         print(response.reasonPhrase);
         snackBar.generalSnackbar(

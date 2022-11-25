@@ -91,7 +91,7 @@ class OrderProvider with ChangeNotifier {
                 landmark: '',
                 id: '',
                 name: addrData[0].toString(),
-                phoneNumber: addrData[5].toString(),
+                phoneNumber: addrData[4].toString(),
                 pincode: addrData[3].toString(),
                 state: addrData[6].toString(),
                 town: addrData[5].toString());
@@ -248,6 +248,7 @@ class OrderProvider with ChangeNotifier {
     String payment,
     double shipping,
     String deliveryStatus,
+    //String phoneNumber,
     // Address deliveryAddress
   }) {
     DateTime datetime = DateTime.now();
@@ -257,6 +258,7 @@ class OrderProvider with ChangeNotifier {
       amount: amount,
       cart: null,
       datetime: datetime1,
+      // phoneNumber: phoneNumber,
       grandTotal: grandtotal,
       itemTotal: itemTotal,
       payment: payment,

@@ -604,6 +604,16 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                     )
                   ],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text(
+                    //   'Tax Charges',
+                    //   style: Theme.of(context).textTheme.subtitle2,
+                    // ),
+                    // Text('₹' + data.totalprice)
+                  ],
+                ),
 
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

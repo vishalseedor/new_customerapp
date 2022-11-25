@@ -60,6 +60,7 @@ class CartProvider with ChangeNotifier {
   List<String> productIds = [];
   List<String> totalQuantity = [];
   List<String> totalPrice = [];
+  // List<String> listprice = [];
 
   // Future getAllCartProduct({List<int> prodId}) async {
   //   try {
@@ -163,10 +164,13 @@ class CartProvider with ChangeNotifier {
           print('cart product 200');
           for (var i = 0; i < jsonData['entries']['entry'].length; i++) {
             var data = int.parse(jsonData['entries']['entry'][i]['quantity']);
-            var price =
-                jsonData['entries']['entry'][i]['list_price'].toString() == ""
-                    ? '0'
-                    : jsonData['entries']['entry'][i]['list_price'].toString();
+            var price = jsonData['entries']['entry'][i]
+                            ['standard_price_tax_included']
+                        .toString() ==
+                    ""
+                ? '0'
+                : jsonData['entries']['entry'][i]['standard_price_tax_included']
+                    .toString();
             // print('welcome cart' + jsonData['entries']['entry'][i].toString());
             // print(jsonData['entries']['entry'][i]['productid']);
             // id.add(int.parse(jsonData['entries']['entry'][i]['productid']));
@@ -452,6 +456,11 @@ class CartProvider with ChangeNotifier {
 
     return totalCast.round().toString();
   }
+
+  // String get taxcharges {
+  //   double totalCharge = 0.0;
+  //   totalCharge=totalPrice -listprice
+  // }
 
   double get vattax {
     var vat = 0.0;

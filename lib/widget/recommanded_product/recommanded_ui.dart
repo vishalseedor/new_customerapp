@@ -135,14 +135,17 @@ class _RecommandedDesignState extends State<RecommandedDesign> {
                         AutoSizeText('₹' + product.price.toString()),
                         Text(
                           product.taxtext ?? '',
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: TextStyle(
+                              color: CustomColor.bluecolor, fontSize: 15),
+                          // style: Theme.of(context).textTheme.subtitle2,
                         ),
                         Row(
                           children: [
                             ElevatedButton(
-                                child: Text(
-                                    product.isCart ? 'In cart' : 'Add to cart'),
-                                onPressed: () async {
+                                child: Text(product.isCart == true
+                                    ? 'In cart'
+                                    : 'Add to cart'),
+                                onPressed: () {
                                   if (product.isCart == true) {
                                     _services.customDialog(
                                         context,
@@ -155,9 +158,13 @@ class _RecommandedDesignState extends State<RecommandedDesign> {
                                             productId: product.productId,
                                             quantity: 1)
                                         .then((value) {
-                                      if (value == '202') {
+                                      if (value == '200') {
                                         productcount.countproductsadd(
                                             id: product.productId);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                                _snackbar.customSnackbar(
+                                                    context: context));
                                         print(productcount.cartProductTotal
                                                 .toString() +
                                             '--->> cart total count');

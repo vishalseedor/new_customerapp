@@ -288,7 +288,7 @@ class FavouriteProvider with ChangeNotifier {
 
         notifyListeners();
         globalSnackBar.generalSnackbar(
-            context: context, text: 'Remove From Favourite Successful');
+            context: context, text: 'Removed From Favourites');
       } else {}
       return response.statusCode;
     } catch (e) {

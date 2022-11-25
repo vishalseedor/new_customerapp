@@ -255,7 +255,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
         ),
-        title: const Text('Details'),
+        title: const Text('Product Details'),
         // title: Text(
         //   'DETAILS',
         //   style: Theme.of(context).textTheme.bodyText2,
@@ -375,14 +375,35 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     Container(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        ' Price :  ₹ ' + productDetails.price.toString(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: CustomColor.blackcolor),
-                        textAlign: TextAlign.left,
+                      child: Row(
+                        children: [
+                          Text(
+                            ' Price :  ₹ ' + productDetails.price.toString(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: CustomColor.blackcolor),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            width: size.width * 0.03,
+                          ),
+                          Text(productDetails.taxtext ?? '',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColor.orangecolor))
+                        ],
                       ),
                     ),
+                    // Container(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Text(
+                    //     productDetails.taxtext ?? '',
+                    //     style: const TextStyle(
+                    //         fontWeight: FontWeight.bold,
+                    //         color: CustomColor.orangecolor),
+                    //     textAlign: TextAlign.left,
+                    //   ),
+                    // ),
 
                     Container(
                       alignment: Alignment.centerLeft,
@@ -643,9 +664,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             context: context,
                             productId: productDetails.productId)
                         .then((value) {
-                      if (value == 202) {
+                      if (value == '200') {
                         print('its working fine da');
-                        productDetails.isFavourite = true;
+                        productDetails.isFavouriteButton();
+                        // productDetails.isFavourite = true;
                         setState(() {});
                       }
                     });
@@ -732,7 +754,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.shopping_bag),
-                      Text(productDetails.isCart ? 'Already in bag' : 'Bag It'),
+                      Text(productDetails.isCart == true
+                          ? 'Already in bag'
+                          : 'Bag It'),
                     ],
                   ),
                   onPressed: () {
@@ -747,11 +771,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               productId: productDetails.productId,
                               quantity: 1)
                           .then((value) {
-                        if (value == 202) {
+                        if (value == '200') {
+                          product.countproductsadd(
+                              id: productDetails.productId);
                           productDetails.isCart = true;
                           ScaffoldMessenger.of(context).showSnackBar(
                               _snackbar.customSnackbar(context: context));
-                          setState(() {});
+                          productDetails.isCartButton();
+
+                          // setState(() {});
                         }
                       });
                       // cart

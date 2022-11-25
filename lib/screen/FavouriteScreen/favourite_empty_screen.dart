@@ -23,16 +23,16 @@ class EmptyFavouriteScreen extends StatelessWidget {
               color: CustomColor.orangecolor,
             ),
             const Text('No Favourites Yet!'),
+            // SizedBox(
+            //   height: size.height * 0.03,
+            // ),
+            // Text(
+            //   'Once you favourite a Workmate,\n You\'ll see them here.',
+            //   textAlign: TextAlign.center,
+            //   style: Theme.of(context).textTheme.subtitle2,
+            // ),
             SizedBox(
-              height: size.height * 0.05,
-            ),
-            Text(
-              'Once you favourite a Workmate,\n You\'ll see them here.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.subtitle2,
-            ),
-            SizedBox(
-              height: size.height * 0.05,
+              height: size.height * 0.03,
             ),
             ElevatedButton(
                 onPressed: () {

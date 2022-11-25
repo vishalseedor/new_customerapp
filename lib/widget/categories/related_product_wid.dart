@@ -179,6 +179,9 @@ class _RelatatedProdWidState extends State<RelatatedProdWid> {
                       'Price : ₹' + productCategory.price.toString(),
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
+                    Text(productCategory.taxtext ?? '',
+                        style: TextStyle(
+                            color: CustomColor.bluecolor, fontSize: 15))
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceAround,
                     //   children: [

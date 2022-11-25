@@ -5,7 +5,7 @@ import 'package:food_app/provider/bottom_navigationbar_provider.dart';
 import 'package:provider/provider.dart';
 
 class EmptyCartScreen extends StatelessWidget {
-  const  EmptyCartScreen({Key key}) : super(key: key);
+  const EmptyCartScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,13 @@ class EmptyCartScreen extends StatelessWidget {
               margin: const EdgeInsets.all(10),
               child: const Text('Your Cart is Empty')),
           Container(
-              margin: const EdgeInsets.all(10),
-              child: Text(
-                'Looks like you havent\'t added any product to your cart yet.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle2,
-              )),
+            margin: const EdgeInsets.all(10),
+            // child: Text(
+            //   '',
+            //   textAlign: TextAlign.center,
+            //   style: Theme.of(context).textTheme.subtitle2,
+            // )
+          ),
           ElevatedButton(
             onPressed: () {
               navigation.currentIndex = 0;

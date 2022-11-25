@@ -71,21 +71,29 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     //final favproduct = data.fav;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Favourite'),
+          title: const Text(' My Favourites'),
           centerTitle: true,
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: InkWell(
-                  onTap: () {
-                    alertBox();
-                  },
-                  child: Text(
-                    'Clear Favourite',
-                    style: CustomThemeData().clearStyle(),
-                  ),
-                ),
+                    onTap: () {
+                      alertBox();
+                    },
+                    child: ElevatedButton(
+                      child: Text(
+                        'Clear Favourite',
+                        style: TextStyle(
+                            color: CustomColor.whitecolor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                    // Text(
+                    //   'Clear Favourite',
+                    //   style: CustomThemeData().clearStyle(),
+                    // ),
+                    ),
               ),
             )
           ],

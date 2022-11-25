@@ -219,6 +219,10 @@ class _FilterProductDesignState extends State<FilterProductDesign> {
                     '₹ ' + product.price.toString(),
                     style: Theme.of(context).textTheme.headline4,
                   ),
+                  Text(
+                    product.taxtext ?? '',
+                    style: TextStyle(color: CustomColor.orangecolor),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

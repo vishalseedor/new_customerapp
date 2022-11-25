@@ -369,11 +369,11 @@ class ProductProvider with ChangeNotifier {
 
       var response = await http.get(
         Uri.parse(
-            "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','price_included'}&userid=11563&domain=[('categ_id','!=','Seedor Products')]"),
+            "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','price_included','standard_price_tax_included'}&userid=11563&domain=[('categ_id','!=','Seedor Products')]"),
         headers: headers,
       );
       print(
-          "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','price_included'}&userid=11563&domain=[('categ_id','!=','Seedor Products')]");
+          "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','price_included','standard_price_tax_included'}&userid=11563&domain=[('categ_id','!=','Seedor Products')]");
       ;
 
       print(response.body);
@@ -385,7 +385,7 @@ class ProductProvider with ChangeNotifier {
           }
 
           print(extractedData[i]['display_name']);
-          double price = extractedData[i]['list_price'];
+          double price = extractedData[i]['standard_price_tax_included'];
           print('bool 1 is loading --->');
 
           final imageData = extractedData[i]['image_location'].toString();
@@ -394,7 +394,7 @@ class ProductProvider with ChangeNotifier {
           print(extractedData[i]['product_variant_id']);
           print(extractedData[i]['categ_id']);
           print(extractedData[i]['display_name']);
-          print(extractedData[i]['list_price']);
+          print(extractedData[i]['standard_price_tax_included']);
           print(extractedData[i]['pricelist_id']);
           print(extractedData[i]['price_included'].toString() + '--->');
 

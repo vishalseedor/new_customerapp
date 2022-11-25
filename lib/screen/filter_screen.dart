@@ -19,10 +19,10 @@ class FilterSCreen extends StatefulWidget {
 class _FilterSCreenState extends State<FilterSCreen> {
   bool _loading = false;
   int startprice = 0;
-  int endprice = 1000000;
+  int endprice = 1000;
   List<String> cate_id = [];
   RangeValues values = const RangeValues(1, 1000);
-  RangeLabels labels = const RangeLabels('1', "1000000");
+  RangeLabels labels = const RangeLabels('1', "1000");
 
   List<Map<String, dynamic>> rating = [
     {

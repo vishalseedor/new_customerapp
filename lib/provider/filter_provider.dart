@@ -69,11 +69,11 @@ class FilterProvider with ChangeNotifier {
 
       var response = await http.get(
         Uri.parse(
-            "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location'}&userid=11563&domain=[('list_price','>','$startprice'),('list_price','<','$endprice'),('categ_id','=',${listOfId.toList().toString()})]"),
+            "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','standard_price_tax_included','price_included'}&userid=11563&domain=[('list_price','>','$startprice'),('list_price','<','$endprice'),('categ_id','=',${listOfId.toList().toString()})]"),
         headers: headers,
       );
       print(
-          "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location'}&userid=11563&domain=[('list_price','>','$startprice'),('list_price','<','$endprice'),('categ_id','=',${listOfId.toList().toString()})]");
+          "http://eiuat.seedors.com:8001/seedor-api/all-products?clientid=bookseedorpremiumuat&type=products&fields={'active','id','categ_id','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids','image_location','standard_price_tax_included','price_included'}&userid=11563&domain=[('list_price','>','$startprice'),('list_price','<','$endprice'),('categ_id','=',${listOfId.toList().toString()})]");
 
       var jsonData = json.decode(response.body);
       print(jsonData);
@@ -84,7 +84,7 @@ class FilterProvider with ChangeNotifier {
         } else {
           for (var i = 0; i < jsonData.length; i++) {
             print(jsonData[i]['display_name']);
-            double price = jsonData[i]['list_price'];
+            double price = jsonData[i]['standard_price_tax_included'];
 
             final imageData = jsonData[i]['image_location'].toString();
 
@@ -106,6 +106,7 @@ class FilterProvider with ChangeNotifier {
               subtitle: jsonData[i]['categ_id'][1],
               timer: 40,
               title: jsonData[i]['display_name'].toString(),
+              taxtext: jsonData[i]['price_included'].toString(),
             ));
           }
           _filterProduct = _loadedProduct;

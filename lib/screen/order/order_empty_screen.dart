@@ -26,7 +26,7 @@ class OrderEmptyScreen extends StatelessWidget {
           Container(
               margin: const EdgeInsets.all(10),
               child: Text(
-                'Looks like you havent\'t Order any product.',
+                '',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.subtitle2,
               )),

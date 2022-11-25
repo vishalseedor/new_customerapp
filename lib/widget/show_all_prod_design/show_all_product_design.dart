@@ -214,7 +214,9 @@ class _ShowAllProductDesignState extends State<ShowAllProductDesign> {
                   ),
                   Text(
                     product.taxtext ?? '',
-                    style: Theme.of(context).textTheme.subtitle2,
+                    style:
+                        TextStyle(color: CustomColor.bluecolor, fontSize: 15),
+                    // style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
