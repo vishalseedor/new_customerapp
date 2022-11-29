@@ -94,6 +94,7 @@ class OrderProvider with ChangeNotifier {
                 phoneNumber: addrData[4].toString(),
                 pincode: addrData[3].toString(),
                 state: addrData[6].toString(),
+                country: addrData[2].toString(),
                 town: addrData[5].toString());
             print(addrData);
             // print('address data val -->>' + addrData.toList().toString());

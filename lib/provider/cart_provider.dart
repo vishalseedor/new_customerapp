@@ -171,13 +171,13 @@ class CartProvider with ChangeNotifier {
                 ? '0'
                 : jsonData['entries']['entry'][i]['standard_price_tax_included']
                     .toString();
+
             // print('welcome cart' + jsonData['entries']['entry'][i].toString());
             // print(jsonData['entries']['entry'][i]['productid']);
             // id.add(int.parse(jsonData['entries']['entry'][i]['productid']));
             // print('product id + ${id[i]}');
             if (data >= 1) {
               id.add(int.parse(jsonData['entries']['entry'][i]['productid']));
-
               loadData.add(CartModel(
                   id: jsonData['entries']['entry'][i]['productid'].toString(),
                   title: jsonData['entries']['entry'][i]['product_variant_id']
@@ -395,8 +395,10 @@ class CartProvider with ChangeNotifier {
         if (cartTotalProductdata[i].cartCharge[j].price == '' ||
             cartTotalProductdata[i].cartCharge[j].price == null) {
         } else {
-          charge += double.parse(cartTotalProductdata[i].cartCharge[j].price) *
+          charge += double.parse(cartTotalProductdata[i].cartCharge[i].price) *
               cartproduct[i].quantity;
+
+          //cartproduct[i].quantity;
         }
       }
     }
@@ -432,6 +434,11 @@ class CartProvider with ChangeNotifier {
     return charge.roundToDouble();
   }
 
+  double get taxcharges {
+    var tax = 0.0;
+    var total = 0.0;
+  }
+
   double get totalTax {
     var tax = 0.0;
     var total = 0.0;
@@ -458,8 +465,9 @@ class CartProvider with ChangeNotifier {
   }
 
   // String get taxcharges {
-  //   double totalCharge = 0.0;
-  //   totalCharge=totalPrice -listprice
+  //   double charges = 0.0;
+  //   charges = totalAmount - double.parse(totalprice);
+  //   ;
   // }
 
   double get vattax {
@@ -657,6 +665,7 @@ class CartProvider with ChangeNotifier {
         Uri.parse('http://eiuat.seedors.com:8290/get-all-details'),
         headers: headers,
         body: body);
+    print('http://eiuat.seedors.com:8290/get-all-details');
 
     var jsondata = json.decode(response.body);
     print('product get working good --->> 3');

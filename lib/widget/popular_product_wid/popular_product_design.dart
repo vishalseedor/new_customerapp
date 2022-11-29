@@ -173,7 +173,7 @@ class _PopularProductDesignState extends State<PopularProductDesign> {
                       //   style: Theme.of(context).textTheme.caption,
                       // ),
                       Container(
-                          width: size.width * 0.25,
+                          width: size.width * 0.26,
                           height: size.height * 0.04,
                           decoration: BoxDecoration(
                               color: CustomColor.orangecolor,

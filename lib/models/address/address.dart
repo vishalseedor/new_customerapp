@@ -9,6 +9,8 @@ class Addresss with ChangeNotifier {
   final String area;
   final String landmark;
   final String town;
+  final String country;
+  final String countryId;
   final String state;
   final String addresstype;
   final String stateId;
@@ -25,6 +27,8 @@ class Addresss with ChangeNotifier {
     this.area,
     this.landmark,
     this.town,
+    this.country,
+    this.countryId,
     this.state,
     this.addresstype,
     this.lat,

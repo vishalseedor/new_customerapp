@@ -16,7 +16,7 @@ class RecommandedProdWid extends StatelessWidget {
     List<Product> product = productData.product;
     return Consumer<ProductProvider>(builder: (context, data, _) {
       return SizedBox(
-        height: size.height * 0.25,
+        height: size.height * 0.3,
         // width: size.width * 0.85,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,

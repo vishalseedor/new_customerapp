@@ -387,6 +387,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           SizedBox(
                             width: size.width * 0.03,
                           ),
+                          Text('--'),
+                          SizedBox(
+                            width: size.width * 0.03,
+                          ),
                           Text(productDetails.taxtext ?? '',
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,

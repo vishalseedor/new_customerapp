@@ -45,6 +45,12 @@ class AddressProvider with ChangeNotifier {
     return [..._stateIdDropDown];
   }
 
+  List<Addresss> _countryIdDropDown = [];
+
+  List<Addresss> get countryIdDropDown {
+    return [..._countryIdDropDown];
+  }
+
   Future<void> getAddressData(BuildContext context) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -72,6 +78,8 @@ class AddressProvider with ChangeNotifier {
             addresstype: otherAddress[i]['type'] ?? 'other',
             area: otherAddress[i]['street'].toString(),
             stateId: otherAddress[i]['state_id'][0].toString(),
+            country: otherAddress[i]['country_id'][1].toString(),
+            countryId: otherAddress[i]['country_id'][0].toString(),
             houseNumber: otherAddress[i]['street2'].toString(),
             landmark: otherAddress[i]['landmark'].toString(),
             name: otherAddress[i]['name'].toString(),
@@ -123,7 +131,7 @@ class AddressProvider with ChangeNotifier {
         "street": address.area,
         "street2": address.houseNumber,
         "state_id": address.stateId,
-        "country_id": "1",
+        "country_id": address.countryId,
         "email": email,
         "phone": address.phoneNumber,
         "mobile": address.phoneNumber,
@@ -168,7 +176,7 @@ class AddressProvider with ChangeNotifier {
         "street": address.area,
         "street2": address.houseNumber,
         "state_id": address.stateId,
-        "country_id": "1",
+        "country_id": address.countryId,
         "email": email,
         "phone": address.phoneNumber,
         "mobile": address.phoneNumber,
@@ -233,6 +241,56 @@ class AddressProvider with ChangeNotifier {
     }
   }
 
+  // List<CountyDropDownModel> _countryDropDown = [];
+  // List<CountryDropDownModel> get countryDropDown {
+  //   return _countryDropDown;
+  // }
+  List<CountryDropModel> _countryDropdown = [];
+  List<CountryDropModel> get countryDropDown {
+    return _countryDropdown;
+  }
+
+  Future CountryDropDownField({
+    BuildContext context,
+    List<CountryDropModel> listAdds,
+  }) async {
+    print('state api is loading ---->1');
+    try {
+      listAdds = [];
+      var headers = {'Content-Type': 'application/json'};
+      var body = json.encode(
+          {"clientid": client_id, "type": "country_id", "fields": "{'name'}"});
+      print(body);
+      var response = await http.post(
+          Uri.parse(
+              'http://eiuat.seedors.com:8290/seedor-affinity/lead/dropdown'),
+          headers: headers,
+          body: body);
+      print('http://eiuat.seedors.com:8290/seedor-affinity/lead/dropdown');
+
+      var jsonData = json.decode(response.body);
+      print(jsonData);
+      if (response.statusCode == 200) {
+        for (var i = 0; i < jsonData.length; i++) {
+          listAdds.add(CountryDropModel(
+              id: jsonData[i]['id'].toString(),
+              name: jsonData[i]['name'].toString()));
+        }
+        _countryDropdown = listAdds;
+
+        notifyListeners();
+
+        print(jsonData);
+      }
+    } catch (e) {
+      print(e);
+      // _isErrorLoading = true;
+      _isLoading = false;
+      // _errorMessage = 'Something went wrong';
+      notifyListeners();
+    }
+  }
+
   List<DropDownModel> _stateDropDown = [];
   List<DropDownModel> get stateDropDown {
     return _stateDropDown;
@@ -244,7 +302,7 @@ class AddressProvider with ChangeNotifier {
     String apiName,
     List<DropDownModel> listAdd,
   }) async {
-    print('country api is loading ---->1');
+    print('state api is loading ---->1');
     try {
       listAdd = [];
       var headers = {
@@ -255,7 +313,7 @@ class AddressProvider with ChangeNotifier {
         "clientid": client_id,
         "type": 'state_id',
         "fields": "{'name'}",
-        "domain": "[('country_id','=',104)]"
+        "domain": "[('country_id','=',$countryId)]"
       });
 
       print(body);
@@ -340,6 +398,7 @@ class AddressProvider with ChangeNotifier {
         area: address.area,
         landmark: address.landmark,
         town: address.town,
+        country: address.countryId,
         state: address.stateId,
         addresstype: address.addresstype,
       );

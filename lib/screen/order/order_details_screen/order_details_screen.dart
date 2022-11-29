@@ -319,24 +319,45 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                     title: 'Phone Number',
                     subtitle: orderData.address.phoneNumber,
                     context: context),
+
                 orderDetails(
                     title: 'Delivery to',
                     subtitle: orderData.address.name +
-                            ',' +
-                            orderData.address.houseNumber +
-                            ',' +
-                            orderData.address.area +
-                            ',' +
-                            orderData.address.landmark +
-                            ',' +
-                            orderData.address.town ??
-                        'null'
-                                ',' +
-                            orderData.address.state ??
-                        'null'
-                                ',' +
-                            orderData.address.pincode,
+                        ',' +
+                        orderData.address.houseNumber +
+                        ',' +
+                        orderData.address.area +
+                        ',' +
+                        orderData.address.landmark +
+                        ',' +
+                        orderData.address.pincode +
+                        ',' +
+                        orderData.address.state +
+                        ',',
+                    // orderData.address.country +
+                    // ',',
                     context: context)
+                // orderDetails(
+                //     title: 'Delivery to',
+                //     subtitle: orderData.address.name +
+                //             ',' +
+                //             orderData.address.houseNumber +
+                //             ',' +
+                //             orderData.address.area +
+                //             ',' +
+                //             orderData.address.landmark +
+                //             ',' +
+                //             orderData.address.state +
+                //             ',' +
+                //             orderData.address.town ??
+                //         'null'
+                //                 ',' +
+                //             orderData.address.state ??
+                //         'null'
+                //                 ',' +
+                //             orderData.address.country ??
+                //         'null' ',' + orderData.address.pincode,
+                //     context: context)
               ],
             ),
           ),

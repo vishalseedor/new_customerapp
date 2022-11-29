@@ -137,7 +137,7 @@ class AuthProvider with ChangeNotifier {
         await globalSnackBar.successsnackbar(
             context: context, text: 'Logged in successfull');
       } else {
-        if (jsonData['ERROR'] == "Please enter the correct password") {
+        if (jsonData['ERROR'] == "Please enter the correct email") {
           services.customDialog(
               context, 'Password', 'Please enter the correct password');
         } else {
