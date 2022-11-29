@@ -33,7 +33,7 @@ class GlobalSnackBar {
                   Text('${product.cartProductTotal.length} ITEM'),
                   Row(
                     children: const [
-                      Text('Product Add successfull'),
+                      Text(' Product added Successfully'),
                       SizedBox(
                         width: 10,
                       ),

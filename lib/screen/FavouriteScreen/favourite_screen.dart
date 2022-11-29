@@ -76,25 +76,27 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: InkWell(
-                    onTap: () {
-                      alertBox();
-                    },
-                    child: ElevatedButton(
-                      child: Text(
-                        'Clear Favourite',
-                        style: TextStyle(
-                            color: CustomColor.whitecolor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                    // Text(
-                    //   'Clear Favourite',
-                    //   style: CustomThemeData().clearStyle(),
-                    // ),
+              child: data.fav.isEmpty
+                  ? Container()
+                  : Center(
+                      child: InkWell(
+                          onTap: () {
+                            alertBox();
+                          },
+                          child: ElevatedButton(
+                            child: Text(
+                              'Clear Favourite',
+                              style: TextStyle(
+                                  color: CustomColor.whitecolor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                          // Text(
+                          //   'Clear Favourite',
+                          //   style: CustomThemeData().clearStyle(),
+                          // ),
+                          ),
                     ),
-              ),
             )
           ],
         ),

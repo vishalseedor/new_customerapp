@@ -92,9 +92,11 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
         ',' +
         selectedAddress.addresstype;
 
-    for (var i = 0; i < cartproduct.length; i++) {
+    //vishal
+    for (var i = 0; i < cartTotalProduct.cartTotalProductdata.length; i++) {
+      //vishal
       lineItem =
-          '{"price\": \"${cartproduct[i].price}\", \"discount\": \"0\", \"productid\": \"${cartproduct[i].id}\", \"quantity\": \"${cartproduct[i].quantity}\",\"productName\": \"${cartproduct[i].title}\"}';
+          '{"price\": \"${cartTotalProduct.cartTotalProductdata[i].price}\", \"discount\": \"0\", \"productid\": \"${cartTotalProduct.cartTotalProductdata[i].id}\", \"quantity\": \"${cartTotalProduct.cartTotalProductdata[i].quantity}\",\"productName\": \"${cartTotalProduct.cartTotalProductdata[i].title}\"}';
       for (var j = 0;
           j < cartTotalProduct.cartTotalProductdata[i].cartCharge.length;
           j++) {
@@ -146,8 +148,7 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
     order.postOrderApi(
         amount: data.totalAmount.toString(),
         grandTotal: data.totalprice.toString(),
-        paymentType:
-            onlinepayment == true ? 'Pay with Card' : 'Cash on delivery',
+        paymentType: onlinepayment == true ? 'Pay By Card' : 'Cash on delivery',
         shippingCharge: data.deliverycharge.toString(),
         addressId: selectedAddress.id,
         context: context,
@@ -323,6 +324,12 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                                   overflow: TextOverflow.fade,
                                   style: Theme.of(context).textTheme.caption,
                                 ),
+                                Text(
+                                  address[index].country,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.fade,
+                                  style: Theme.of(context).textTheme.caption,
+                                )
                               ],
                             )),
                       ),
@@ -611,7 +618,7 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                     //   'Tax Charges',
                     //   style: Theme.of(context).textTheme.subtitle2,
                     // ),
-                    // Text('₹' + data.totalprice)
+                    // Text('₹' + data.taxcharges)
                   ],
                 ),
 

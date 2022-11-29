@@ -19,10 +19,10 @@ class FilterSCreen extends StatefulWidget {
 class _FilterSCreenState extends State<FilterSCreen> {
   bool _loading = false;
   int startprice = 0;
-  int endprice = 1000;
+  int endprice = 100000;
   List<String> cate_id = [];
-  RangeValues values = const RangeValues(1, 1000);
-  RangeLabels labels = const RangeLabels('1', "1000");
+  RangeValues values = const RangeValues(1, 100000);
+  RangeLabels labels = const RangeLabels('1', "100000");
 
   List<Map<String, dynamic>> rating = [
     {
@@ -111,7 +111,7 @@ class _FilterSCreenState extends State<FilterSCreen> {
                           activeColor: CustomColor.orangecolor,
                           inactiveColor: CustomColor.grey200,
                           min: 1,
-                          max: 1000,
+                          max: 100000,
                           values: values,
                           labels: labels,
                           onChanged: (value) {

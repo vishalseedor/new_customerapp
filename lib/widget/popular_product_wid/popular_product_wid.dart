@@ -22,7 +22,7 @@ class PopularProductWid extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.all(2),
-      height: size.height * 0.35,
+      height: size.height * 0.40,
       child: StatefulWrapper(
         onInit: () {},
         child: AnimationLimiter(

@@ -59,7 +59,7 @@ class _MyAddressDesignState extends State<MyAddressDesign> {
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(
-                    '${address.town},${address.state},${address.pincode}',
+                    '${address.town},${address.state},${address.country},${address.pincode}',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(
@@ -79,6 +79,7 @@ class _MyAddressDesignState extends State<MyAddressDesign> {
                     print(widget.addressId + 'addressId');
                     print(address.addresstype + 'address type');
                     print(address.state + 'state ahe odi va');
+                    print(address.country + 'country odi vaaaaa');
                     Navigator.of(context).pushNamed(AddAddressScreen.routeName,
                         arguments: widget.addressId);
                   },

@@ -96,33 +96,36 @@ class _MyCartScreenState extends State<MyCartScreen> {
     // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(' My Cart'),
+        title: const Text('My Cart'),
         centerTitle: true,
         actions: [
-          Center(
-            child: Container(
-              margin: const EdgeInsets.all(6),
-              child: InkWell(
-                  onTap: () {
-                    alertBox();
-                  },
-                  child: ElevatedButton(
-                    child: Text(
-                      'Clear Cart',
-                      style: TextStyle(
-                          color: CustomColor.whitecolor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                  // Text(
-                  //   'Clear cart',
-                  //   style: CustomThemeData().clearStyle(),
-                  // ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: data.cartproduct.isEmpty
+                ? Container()
+                : Center(
+                    child: InkWell(
+                        onTap: () {
+                          alertBox();
+                        },
+                        child: ElevatedButton(
+                          child: Text(
+                            'Clear Cart',
+                            style: TextStyle(
+                                color: CustomColor.whitecolor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                        // Text(
+                        //   'Clear Favourite',
+                        //   style: CustomThemeData().clearStyle(),
+                        // ),
+                        ),
                   ),
-            ),
           )
         ],
       ),
+
       body: data.cartproduct.isEmpty
           ? const EmptyCartScreen()
           : isLoading

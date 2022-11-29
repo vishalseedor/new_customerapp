@@ -4,7 +4,6 @@ import 'package:food_app/const/color_const.dart';
 import 'package:food_app/const/theme.dart';
 import 'package:food_app/models/address/address.dart';
 import 'package:food_app/models/dropdown.dart';
-
 import 'package:food_app/provider/address/address_provider.dart';
 import 'package:food_app/services/dialogbox.dart';
 import 'package:food_app/services/location.dart';
@@ -30,17 +29,21 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   final TextEditingController _landmarkController = TextEditingController();
   final TextEditingController _townController = TextEditingController();
   final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
   final TextEditingController _addresstypeController = TextEditingController();
 
   String selectedValue = "private";
   String stateIdDropdown;
+  String countryIdDropdown;
 
   var isInit = true;
+  bool isvisible = false;
 
   Position position;
   List<Placemark> placemark;
   String addresId;
   String stateid;
+  String countryid;
 
   @override
   void dispose() {
@@ -52,6 +55,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     _areaController.dispose();
     _landmarkController.dispose();
     _townController.dispose();
+    _countryController.dispose();
     _stateController.dispose();
     _addresstypeController.dispose();
   }
@@ -65,6 +69,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       area: '',
       landmark: '',
       town: '',
+      countryId: '',
+      country: '',
       stateId: '',
       state: '',
       addresstype: '');
@@ -76,6 +82,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     'area': '',
     'landmark': '',
     'town': '',
+    'country': '',
     'state': '',
     'addresstype': '',
   };
@@ -86,17 +93,20 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   @override
   void initState() {
     super.initState();
+    setState(() {});
     final data = Provider.of<AddressProvider>(context, listen: false);
     Provider.of<CurrentLocation>(context, listen: false).determinePosition();
     Provider.of<AddressProvider>(context, listen: false)
-        .stateDropDownField(
-            listAdd: data.stateDropDown,
-            apiName: 'state_id',
-            context: context,
-            countryId: '104')
-        .then((value) {
-      setState(() {});
-    });
+        .CountryDropDownField(listAdds: data.countryDropDown, context: context)
+        .then((value) {});
+    //     .stateDropDownField(
+    //         listAdd: data.stateDropDown,
+    //         apiName: 'state_id',
+    //         context: context,
+    //         countryId: '104')
+    //     .then((value) {
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -119,6 +129,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         }
         print(editAddress.state +
             'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+        if (editAddress.country == null) {
+        } else {
+          print(editAddress.countryId);
+          countryIdDropdown = editAddress.countryId;
+        }
 
         // if (stateIdDropdown != null) {
         //   editAddress = Provider.of<AddressProvider>(context, listen: false)
@@ -143,8 +158,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         _areaController.text = editAddress.area;
         _landmarkController.text = editAddress.landmark;
         _townController.text = editAddress.town;
+        _countryController.text = editAddress.country;
         _stateController.text = editAddress.state;
         stateIdDropdown = editAddress.stateId;
+        countryIdDropdown = editAddress.countryId;
         _addresstypeController.text = selectedValue;
       }
     }
@@ -212,7 +229,19 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     } else {
       _areaController.text = pMark.subLocality;
     }
+    if (pMark.administrativeArea == null || pMark.administrativeArea == '') {
+      _stateController.text = pMark.administrativeArea;
+    } else {
+      _stateController.text = pMark.administrativeArea;
+    }
+    if (pMark.country == null || pMark.country == '') {
+      _countryController.text = pMark.country;
+    } else {
+      _countryController.text = pMark.country;
+    }
+
     _townController.text = pMark.locality;
+    _landmarkController.text = pMark.locality;
     //_stateController.text = pMark.administrativeArea;
     _housenumberController.text = pMark.street;
 
@@ -255,6 +284,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     onPressed: () {
                       CurrentLocation().determinePosition();
                       getCurrentLocation();
+                      isvisible = true;
                     },
                   ),
                 ),
@@ -426,6 +456,87 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 SizedBox(
                   height: size.height * 0.03,
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    title('Country'),
+                    isvisible == false
+                        ? Container(
+                            height: size.height * 0.065,
+                            decoration: BoxDecoration(
+                                color: CustomColor.grey100,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Theme(
+                                data: Theme.of(context).copyWith(
+                                    colorScheme:
+                                        ThemeData().colorScheme.copyWith(
+                                              primary: CustomColor.orangecolor,
+                                            )),
+                                child: CountryDropdown(context)),
+                          )
+                        : Container(
+                            child: Theme(
+                                data: Theme.of(context).copyWith(
+                                    colorScheme: ThemeData()
+                                        .colorScheme
+                                        .copyWith(
+                                            primary: CustomColor.orangecolor)),
+                                child: CountryText())
+                            // Container(
+                            //   height: size.height * 0.065,
+                            //   decoration: BoxDecoration(
+                            //       color: CustomColor.grey100,
+                            //       borderRadius: BorderRadius.circular(10)),
+                            //   child: TextFormField(
+                            //     controller: _countryController,
+                            //     // initialValue: iniValue['name'],
+                            //     style: CustomThemeData().clearStyle(),
+                            //     textInputAction: TextInputAction.next,
+                            //     keyboardType: TextInputType.text,
+                            //     decoration: const InputDecoration(
+                            //         labelStyle: TextStyle(
+                            //             color: CustomColor.orangecolor),
+                            //         hintText: 'Country',
+                            //         border: InputBorder.none,
+                            //         focusedBorder: InputBorder.none,
+                            //         prefixIcon: Icon(
+                            //           Icons.location_city,
+                            //         )),
+
+                            //     validator: (value) {
+                            //       if (value.isEmpty) {
+                            //         return _services.customDialog(context,
+                            //             'Country', 'Please add your Country');
+                            //       }
+                            //       return null;
+                            //     },
+                            //     onSaved: (value) {
+                            //       editAddress = Addresss(
+                            //           id: editAddress.id,
+                            //           name: editAddress.name,
+                            //           phoneNumber: editAddress.phoneNumber,
+                            //           pincode: editAddress.pincode,
+                            //           houseNumber: editAddress.houseNumber,
+                            //           area: editAddress.area,
+                            //           landmark: editAddress.landmark,
+                            //           town: editAddress.town,
+                            //           countryId: editAddress.countryId,
+                            //           country: editAddress.country,
+                            //           stateId: editAddress.stateId,
+                            //           state: editAddress.state,
+                            //           addresstype: editAddress.addresstype);
+                            //     },
+                            //     // onChanged: (val) {
+                            //     //   val = _nameController.text.toString();
+                            //     // },
+                            //   ),
+                            // ),
+                            ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
                 // Column(
                 //   crossAxisAlignment: CrossAxisAlignment.start,
                 //   children: [
@@ -448,18 +559,77 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     title('State'),
-                    Container(
-                      height: size.height * 0.065,
-                      decoration: BoxDecoration(
-                          color: CustomColor.grey100,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Theme(
-                          data: Theme.of(context).copyWith(
-                              colorScheme: ThemeData().colorScheme.copyWith(
-                                    primary: CustomColor.orangecolor,
-                                  )),
-                          child: stateDropdown(context)),
-                    ),
+                    isvisible == false
+                        ? Container(
+                            height: size.height * 0.065,
+                            decoration: BoxDecoration(
+                                color: CustomColor.grey100,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Theme(
+                                data: Theme.of(context).copyWith(
+                                    colorScheme:
+                                        ThemeData().colorScheme.copyWith(
+                                              primary: CustomColor.orangecolor,
+                                            )),
+                                child: stateDropdown(context)),
+                          )
+                        : Container(
+                            child: Theme(
+                                data: Theme.of(context).copyWith(
+                                    colorScheme: ThemeData()
+                                        .colorScheme
+                                        .copyWith(
+                                            primary: CustomColor.orangecolor)),
+                                child: StateText())
+
+                            //  Container(
+                            //   height: size.height * 0.065,
+                            //   decoration: BoxDecoration(
+                            //       color: CustomColor.grey100,
+                            //       borderRadius: BorderRadius.circular(10)),
+                            //   child: TextFormField(
+                            //     controller: _stateController,
+                            //     // initialValue: iniValue['name'],
+                            //     style: CustomThemeData().clearStyle(),
+                            //     textInputAction: TextInputAction.next,
+                            //     keyboardType: TextInputType.text,
+                            //     decoration: const InputDecoration(
+                            //         hintText: 'State',
+                            //         border: InputBorder.none,
+                            //         fillColor: CustomColor.orangecolor,
+                            //         focusedBorder: InputBorder.none,
+                            //         prefixIcon: Icon(
+                            //           Icons.location_city,
+                            //         )),
+                            //     validator: (value) {
+                            //       if (value.isEmpty) {
+                            //         return _services.customDialog(context,
+                            //             'State', 'Please add your State');
+                            //       }
+                            //       return null;
+                            //     },
+                            //     onSaved: (value) {
+                            //       editAddress = Addresss(
+                            //           id: editAddress.id,
+                            //           name: editAddress.name,
+                            //           phoneNumber: editAddress.phoneNumber,
+                            //           pincode: editAddress.pincode,
+                            //           houseNumber: editAddress.houseNumber,
+                            //           area: editAddress.area,
+                            //           landmark: editAddress.landmark,
+                            //           town: editAddress.town,
+                            //           countryId: editAddress.countryId,
+                            //           country: editAddress.country,
+                            //           stateId: editAddress.stateId,
+                            //           state: editAddress.state,
+                            //           addresstype: editAddress.addresstype);
+                            //     },
+                            //     // onChanged: (val) {
+                            //     //   val = _nameController.text.toString();
+                            //     // },
+                            //   ),
+                            // ),
+                            )
                   ],
                 ),
                 SizedBox(
@@ -492,7 +662,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   height: size.height * 0.065,
                   child: ElevatedButton(
                     child: Text(
-                      editAddress.id == '' ? 'Add Address' : 'Edit Address',
+                      editAddress.id == '' ? 'Save Address' : 'Edit Address',
                     ),
                     onPressed: () {
                       submit();
@@ -545,6 +715,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             area: editAddress.area,
             landmark: editAddress.landmark,
             town: editAddress.town,
+            countryId: editAddress.countryId,
+            country: editAddress.country,
             stateId: editAddress.stateId,
             state: editAddress.state,
             addresstype: editAddress.addresstype);
@@ -592,6 +764,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             area: editAddress.area,
             landmark: editAddress.landmark,
             town: editAddress.town,
+            countryId: editAddress.countryId,
+            country: editAddress.country,
             stateId: editAddress.stateId,
             state: editAddress.state,
             addresstype: editAddress.addresstype);
@@ -639,6 +813,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             area: editAddress.area,
             landmark: editAddress.landmark,
             town: editAddress.town,
+            countryId: editAddress.countryId,
+            country: editAddress.country,
             stateId: editAddress.stateId,
             state: editAddress.state,
             addresstype: editAddress.addresstype);
@@ -680,6 +856,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             area: editAddress.area,
             landmark: editAddress.landmark,
             town: editAddress.town,
+            countryId: editAddress.countryId,
+            country: editAddress.country,
             stateId: editAddress.stateId,
             state: editAddress.state,
             addresstype: editAddress.addresstype);
@@ -721,6 +899,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             area: value.toString(),
             landmark: editAddress.landmark,
             town: editAddress.town,
+            countryId: editAddress.countryId,
+            country: editAddress.country,
             stateId: editAddress.stateId,
             state: editAddress.state,
             addresstype: editAddress.addresstype);
@@ -743,7 +923,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
           prefixIcon: Icon(
-            Icons.location_city,
+            Icons.landscape_outlined,
           )),
       onSaved: (value) {
         editAddress = Addresss(
@@ -755,6 +935,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             area: editAddress.area,
             landmark: value.toString(),
             town: editAddress.town,
+            countryId: editAddress.countryId,
+            country: editAddress.country,
             stateId: editAddress.stateId,
             state: editAddress.state,
             addresstype: editAddress.addresstype);
@@ -777,7 +959,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
           prefixIcon: Icon(
-            Icons.location_city,
+            Icons.location_city_outlined,
           )),
       // onChanged: (val) {
       //   val = _townController.text.toString();
@@ -799,11 +981,162 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             area: editAddress.area,
             landmark: editAddress.landmark,
             town: value.toString(),
+            countryId: editAddress.countryId,
+            country: editAddress.country,
             state: editAddress.state,
             stateId: editAddress.stateId,
             addresstype: editAddress.addresstype);
       },
     );
+  }
+
+  Widget StateText() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.065,
+      decoration: BoxDecoration(
+          color: CustomColor.grey100, borderRadius: BorderRadius.circular(10)),
+      child: TextFormField(
+        controller: _stateController,
+        // initialValue: iniValue['town'],
+        style: CustomThemeData().clearStyle(),
+        textInputAction: TextInputAction.next,
+        keyboardType: TextInputType.emailAddress,
+        decoration: const InputDecoration(
+            hintText: 'State',
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            prefixIcon: Icon(
+              Icons.location_city_outlined,
+            )),
+        // onChanged: (val) {
+        //   val = _townController.text.toString();
+        // },
+        validator: (value) {
+          if (value.isEmpty) {
+            return _services.customDialog(
+                context, 'State', 'Please enter your State');
+          }
+          return null;
+        },
+        onSaved: (value) {
+          editAddress = Addresss(
+              id: editAddress.id,
+              name: editAddress.name,
+              phoneNumber: editAddress.phoneNumber,
+              pincode: editAddress.pincode,
+              houseNumber: editAddress.houseNumber,
+              area: editAddress.area,
+              landmark: editAddress.landmark,
+              town: editAddress.town,
+              countryId: editAddress.countryId,
+              country: editAddress.country,
+              state: editAddress.state,
+              stateId: editAddress.stateId,
+              addresstype: editAddress.addresstype);
+        },
+      ),
+    );
+  }
+
+  Widget CountryText() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.065,
+      decoration: BoxDecoration(
+          color: CustomColor.grey100, borderRadius: BorderRadius.circular(10)),
+      child: TextFormField(
+        controller: _countryController,
+        // initialValue: iniValue['town'],
+        style: CustomThemeData().clearStyle(),
+        textInputAction: TextInputAction.next,
+        keyboardType: TextInputType.emailAddress,
+        decoration: const InputDecoration(
+            hintText: 'Country',
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            prefixIcon: Icon(
+              Icons.location_city_outlined,
+            )),
+        // onChanged: (val) {
+        //   val = _townController.text.toString();
+        // },
+        validator: (value) {
+          if (value.isEmpty) {
+            return _services.customDialog(
+                context, 'State', 'Please enter your State');
+          }
+          return null;
+        },
+        onSaved: (value) {
+          editAddress = Addresss(
+              id: editAddress.id,
+              name: editAddress.name,
+              phoneNumber: editAddress.phoneNumber,
+              pincode: editAddress.pincode,
+              houseNumber: editAddress.houseNumber,
+              area: editAddress.area,
+              landmark: editAddress.landmark,
+              town: editAddress.town,
+              countryId: editAddress.countryId,
+              country: editAddress.country,
+              state: editAddress.state,
+              stateId: editAddress.stateId,
+              addresstype: editAddress.addresstype);
+        },
+      ),
+    );
+  }
+
+  Widget CountryDropdown(BuildContext context) {
+    final data = Provider.of<AddressProvider>(context, listen: false);
+    return DropdownButtonFormField(
+        style: CustomThemeData().clearStyle(),
+        decoration: const InputDecoration(
+            hintText: 'Country Dropdown',
+            prefixIcon: Icon(Icons.location_city_sharp),
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none),
+        dropdownColor: CustomColor.grey100,
+        value: countryIdDropdown,
+        onChanged: (String newValue) {
+          setState(() {
+            countryIdDropdown = newValue;
+            print(countryIdDropdown);
+            Provider.of<AddressProvider>(context, listen: false)
+                .stateDropDownField(
+                    apiName: 'state_id',
+                    context: context,
+                    countryId: newValue,
+                    listAdd: data.stateDropDown);
+            print(stateIdDropdown);
+          });
+        },
+        onSaved: (value) {
+          editAddress = Addresss(
+              id: editAddress.id,
+              name: editAddress.name,
+              phoneNumber: editAddress.phoneNumber,
+              pincode: editAddress.pincode,
+              houseNumber: editAddress.houseNumber,
+              area: editAddress.area,
+              landmark: editAddress.landmark,
+              town: editAddress.town,
+              country: editAddress.country,
+              countryId: value.toString(),
+              //country: value.toString(),
+              state: editAddress.state,
+              stateId: editAddress.stateId,
+              addresstype: editAddress.addresstype);
+        },
+        items: data.countryDropDown.map((e) {
+          return DropdownMenuItem(
+              value: e.id.toString(),
+              child: Text(
+                e.name.toString(),
+                overflow: TextOverflow.ellipsis,
+              ));
+        }).toList());
   }
 
   Widget stateDropdown(BuildContext context) {
@@ -812,7 +1145,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         style: CustomThemeData().clearStyle(),
         decoration: const InputDecoration(
             hintText: 'State Dropdown',
-            prefixIcon: Icon(Icons.location_city_outlined),
+            prefixIcon: Icon(Icons.location_city),
             border: InputBorder.none,
             focusedBorder: InputBorder.none),
         dropdownColor: CustomColor.grey100,
@@ -833,6 +1166,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               area: editAddress.area,
               landmark: editAddress.landmark,
               town: editAddress.town,
+              country: editAddress.country,
+              countryId: editAddress.countryId,
               state: editAddress.state,
               stateId: value.toString(),
               addresstype: editAddress.addresstype);
@@ -910,6 +1245,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               area: editAddress.area,
               landmark: editAddress.landmark,
               town: editAddress.town,
+              country: editAddress.country,
+              countryId: editAddress.countryId,
               stateId: editAddress.stateId,
               state: editAddress.state,
               addresstype: value.toString());
