@@ -84,6 +84,7 @@ class _FavouriteDesignState extends State<FavouriteDesign> {
     Size size = MediaQuery.of(context).size;
     final fav = Provider.of<Favourite>(context);
     final favproduct = Provider.of<FavouriteProvider>(context);
+    final product=Provider.of<ProductProvider>(context);
     // final base64 = fav.imageUrl == '' ? customBase64 : fav.imageUrl;
     // var image = base64Decode(base64);
 
@@ -192,8 +193,21 @@ class _FavouriteDesignState extends State<FavouriteDesign> {
                         context: context,
                       )
                           .then((value) {
-                        if (value == 202) {}
+                       // if (value == 202) {}
+                       favproduct.deleteFavourite(
+                        prodId: widget.productId, 
+                        context: context);
                       });
+                        for (var i = 0; i < product.product.length;   i++) {
+                            print(product.product[i].productId);
+                                          if (product.product[i].productId ==
+                                              widget.productId) {
+                                            print(product.product[i].productId
+                                                    .toString() +
+                                                'in if class');
+                                            product.product[i].isFavourite = false;
+                                          }
+                                        }
                     },
                     // onPressed: () async {
                     //   setState(() {

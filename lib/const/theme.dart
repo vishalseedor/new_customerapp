@@ -36,6 +36,10 @@ class CustomThemeData {
               color: CustomColor.blackcolor,
               fontSize: 18,
               fontWeight: FontWeight.bold),
+              //   button: TextStyle(
+              // color: CustomColor.bluecolor,
+              // fontSize: 18,
+              // fontWeight: FontWeight.bold),
           subtitle1: TextStyle(
               color: CustomColor.orangecolor,
               fontSize: 15,

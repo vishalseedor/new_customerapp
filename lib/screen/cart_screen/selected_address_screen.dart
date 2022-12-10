@@ -11,21 +11,25 @@ import 'package:food_app/provider/address/address_provider.dart';
 import 'package:food_app/provider/cart_provider.dart';
 import 'package:food_app/provider/order_provider.dart';
 import 'package:food_app/provider/product_provider.dart';
+import 'package:food_app/screen/cart_screen/cart_screen.dart';
 import 'package:food_app/screen/manage_address/add_address.dart';
 
 import 'package:food_app/services/dialogbox.dart';
 import 'package:food_app/services/payment/stripe_payment.dart';
 import 'package:food_app/widget/cart_product_wid/cart_full_design.dart';
+import 'package:get/get.dart';
 
 import 'package:provider/provider.dart';
 
 import 'package:shimmer/shimmer.dart';
 
+Addresss selectaddressvalue;
+
 class SelecteAddressScreen extends StatefulWidget {
-  SelecteAddressScreen({
+  const SelecteAddressScreen({
     Key key,
   }) : super(key: key);
-  static const routeName = 'cart_screen_design';
+  static const routeName = 'selectaddress_screen_design';
 
   @override
   State<SelecteAddressScreen> createState() => _SelecteAddressScreenState();
@@ -33,6 +37,7 @@ class SelecteAddressScreen extends StatefulWidget {
 
 class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
   // const CartScreenDesign({Key? key}) : super(key: key);
+
   Addresss selectedAddress;
   bool onlinepayment = true;
   bool offlinepayment = false;
@@ -187,6 +192,7 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
     // final cartproduct = data.cartproduct;
     // final total = data.totalAmount;
     final address = Provider.of<AddressProvider>(context).address;
+    final fun = Provider.of<AddressProvider>(context);
     final charge = Provider.of<CartProvider>(context).cartCharges;
 
     void paywithcard(String amount) async {
@@ -274,7 +280,7 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
           (index) => GestureDetector(
                 onTap: null,
                 child: Container(
-                  margin: const EdgeInsets.all(4),
+                  margin: const EdgeInsets.all(15),
                   width: size.width * 0.4,
                   // height: size.height,
                   // height: double.infinity,
@@ -283,18 +289,18 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                           color: selectedAddress == address[index]
                               ? CustomColor.orangecolor
                               : CustomColor.whitecolor),
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(0)),
                   child: Stack(
                     alignment: Alignment.topRight,
                     children: [
                       SizedBox(
                         //jincy
-                        width: size.width * 0.6,
+                        width: size.width * 0.5,
                         height: size.height * 0.3,
                         child: Card(
                             margin: const EdgeInsets.all(0),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                            // shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               // mainAxisAlignment:
@@ -306,31 +312,32 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                                   address[index].name,
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
-                                  style: Theme.of(context).textTheme.subtitle2,
+                                  //style: Theme.of(context).textTheme.,
                                 ),
                                 Text(
                                   address[index].houseNumber,
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.subtitle2,
                                 ),
                                 Text(
                                   address[index].area,
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.subtitle2,
                                 ),
                                 Text(
                                   address[index].phoneNumber,
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
-                                  style: Theme.of(context).textTheme.caption,
+                                  //style: Theme.of(context).textTheme.subtitle2,
+                                  style: TextStyle(color: CustomColor.bluecolor,fontSize: 15,fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   address[index].state,
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.subtitle2,
                                 ),
                               ],
                             )),
@@ -338,12 +345,11 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                       Radio(
                           activeColor: CustomColor.orangecolor,
                           value: address[index],
-                          groupValue: selectedAddress,
+                          groupValue: fun.addressSingleData,
                           onChanged: (val) {
-                            setState(() {
-                              selectedAddress = val;
-                            });
-                            // print(selectedAddress.toString());
+                            setState(() {});
+                            fun.addressSingle(val);
+                            print(fun.addressSingleData.id);
                           }),
                     ],
                   ),
@@ -352,7 +358,7 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
       // ..add(_seeMoreAddress());
       return SizedBox(
           //Jincy
-          height: size.height / 1.4,
+          height: size.height / 1.3,
           width: size.width,
           child: GridView(
             padding: const EdgeInsets.all(10),
@@ -415,7 +421,14 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                   width: size.width * 0.3,
                   child: ElevatedButton(
                     onPressed: () async {
-                      Navigator.of(context).pop();
+                      // selectaddressvalue;
+                      Navigator.pop(context);
+
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => MyCartScreen(
+                      //             productId: , value: selectaddressvalue)));
                     },
                     child: Text(
                       '   Done   ',

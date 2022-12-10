@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_app/const/theme.dart';
 
 import 'package:food_app/provider/cart_provider.dart';
+import 'package:food_app/screen/cart_screen/cart_errormessage_screen.dart';
 import 'package:food_app/screen/cart_screen/empty_cart_screen.dart';
 import 'package:food_app/widget/cart_product_wid/cart_full_design.dart';
 
@@ -14,8 +15,10 @@ import '../../provider/product_provider.dart';
 
 class MyCartScreen extends StatefulWidget {
   final String productId;
+  final List value;
 
-  const MyCartScreen({Key key, @required this.productId}) : super(key: key);
+  const MyCartScreen({Key key, @required this.productId, @required this.value})
+      : super(key: key);
   static const routeName = 'mycart_screen';
 
   @override
@@ -24,6 +27,7 @@ class MyCartScreen extends StatefulWidget {
 
 class _MyCartScreenState extends State<MyCartScreen> {
   bool isLoading = false;
+  bool isError = false;
   @override
   void initState() {
     super.initState();
@@ -31,6 +35,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
     // data.clearcartTotalProductdata();
     setState(() {
       isLoading = true;
+      isError = false;
     });
 
     Provider.of<CartProvider>(context, listen: false)
@@ -52,6 +57,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
       setState(() {
         isLoading = false;
+        isError = true;
       });
     });
     //  final data =  Provider.of<CartProvider>(context, listen: false);
@@ -106,6 +112,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                 : Center(
                     child: InkWell(
                         onTap: () {
+                          setState(() {});
                           alertBox();
                         },
                         child: ElevatedButton(
@@ -135,7 +142,12 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       color: CustomColor.orangecolor,
                       radius: 20),
                 )
-              : const CartScreenDesign(),
+              : data.isError
+                  ? const Center(
+                      child: Text('Something went wrong'),
+                    )
+                  : const CartScreenDesign(),
+
       // bottomNavigationBar: BottomAppBar(
       //   color: Colors.transparent,
       //   elevation: 0,

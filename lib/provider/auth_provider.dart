@@ -143,7 +143,7 @@ class AuthProvider with ChangeNotifier {
         } else {
           await globalSnackBar.generalSnackbar(
               context: context,
-              text: 'Something went wrong please try again later');
+              text: 'Incorrect Password');
         }
         _isLoading = false;
         notifyListeners();

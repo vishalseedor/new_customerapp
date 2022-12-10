@@ -25,4 +25,6 @@ class Favourite with ChangeNotifier {
         imageUrl: json.decode(jsonData['image_1024']),
         productCategory: jsonData['categ_id'][1]);
   }
+
+  set isFavourite(bool isFavourite) {}
 }

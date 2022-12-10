@@ -21,6 +21,11 @@ class AddressProvider with ChangeNotifier {
   bool get isErrorLoading {
     return _isErrorLoading;
   }
+  bool _loadingSpinner = false;
+
+  bool get loadingSpinner {
+    return _loadingSpinner;
+  }
 
   List<Addresss> _address = [
     // Address(
@@ -49,6 +54,16 @@ class AddressProvider with ChangeNotifier {
 
   List<Addresss> get countryIdDropDown {
     return [..._countryIdDropDown];
+  }
+
+  Addresss _addresssSingleData;
+  Addresss get addressSingleData {
+    return _addresssSingleData;
+  }
+
+  void addressSingle(Addresss addresss) {
+    _addresssSingleData = addresss;
+    notifyListeners();
   }
 
   Future<void> getAddressData(BuildContext context) async {
@@ -81,7 +96,7 @@ class AddressProvider with ChangeNotifier {
             country: otherAddress[i]['country_id'][1].toString(),
             countryId: otherAddress[i]['country_id'][0].toString(),
             houseNumber: otherAddress[i]['street2'].toString(),
-            landmark: otherAddress[i]['landmark'].toString(),
+            landmark: otherAddress[i]['city'].toString(),
             name: otherAddress[i]['name'].toString(),
             phoneNumber: otherAddress[i]['mobile'].toString(),
             pincode: otherAddress[i]['zip'].toString(),
@@ -89,7 +104,8 @@ class AddressProvider with ChangeNotifier {
             //state: otherAddress[i]['state'][1].toString(),
             town: otherAddress[i]['city'].toString(),
           ));
-          print(otherAddress[i]['state_id'][1].toString() + 'state id va ');
+          print(otherAddress[i]['state_id'][0].toString() + 'state id va ');
+          print(otherAddress[i]['country_id'][0].toString()+'country id vaa');
           print(jsonData);
 
           // print('success');
@@ -124,7 +140,7 @@ class AddressProvider with ChangeNotifier {
 
       var headers = {
         'Content-Type': 'application/json',
-      };
+  'Cookie': 'session_id=002b72520b3a18c81253b1a4679cbe6a62824a35'};
       var body = json.encode({
         "type": address.addresstype.toLowerCase(),
         "name": address.name,
@@ -137,7 +153,7 @@ class AddressProvider with ChangeNotifier {
         "mobile": address.phoneNumber,
         "parent_id": parentid,
         "city": address.town,
-        "zip": address.pincode,
+        "zip": address.pincode, 
         "clientid": client_id
       });
       print(body.toString());
@@ -147,7 +163,7 @@ class AddressProvider with ChangeNotifier {
           headers: headers,
           body: body);
       print(body.toString());
-      print('http://eiuat.seedors.com:8290/customer-app/create-address');
+      print('http://eiuat.seedors.com:8290/customer-app/create-address'+'address add');
       if (response.statusCode == 200) {
         snackBar.successsnackbar(
             context: context, text: 'Address Updated Successfully');
@@ -299,6 +315,7 @@ class AddressProvider with ChangeNotifier {
   Future stateDropDownField({
     BuildContext context,
     String countryId,
+    String countryname,
     String apiName,
     List<DropDownModel> listAdd,
   }) async {
@@ -309,14 +326,15 @@ class AddressProvider with ChangeNotifier {
         'Content-Type': 'application/json',
         'Cookie': 'session_id=45d1faac162ae021674fb5e470f347e3b66e3df8'
       };
-      var body = json.encode({
-        "clientid": client_id,
-        "type": 'state_id',
-        "fields": "{'name'}",
-        "domain": "[('country_id','=',$countryId)]"
+       var body = json.encode({
+      "clientid": client_id,
+      "type": "state_id",
+      "fields": "{'name','country_id'}",
+      "domain":"[('country_id','=',$countryId)]"
+     
       });
 
-      print(body);
+      print(body.toString()+'body print vaaa');
       var response = await http.post(
           Uri.parse(
               'http://eiuat.seedors.com:8290/seedor-affinity/lead/dropdown'),
@@ -327,11 +345,14 @@ class AddressProvider with ChangeNotifier {
       var jsonData = json.decode(response.body);
       print(jsonData);
       if (response.statusCode == 200) {
+        print(response.body.toString()+'response value');
         for (var i = 0; i < jsonData.length; i++) {
           listAdd.add(DropDownModel(
+              countryid: jsonData[0]['country_id'][0].toString(),
               id: jsonData[i]['id'].toString(),
               title: jsonData[i]['name'].toString()));
         }
+        print(jsonData[0]['country_id'][0].toString()+'country id seekram va');
         if (apiName == 'state_id') {
           _stateDropDown = listAdd;
           notifyListeners();
@@ -398,8 +419,9 @@ class AddressProvider with ChangeNotifier {
         area: address.area,
         landmark: address.landmark,
         town: address.town,
-        country: address.countryId,
-        state: address.stateId,
+       
+        countryId: address.countryId,
+        stateId: address.stateId,
         addresstype: address.addresstype,
       );
       _address.add(newaddress);
@@ -434,6 +456,12 @@ class AddressProvider with ChangeNotifier {
         // notifyListeners();
       }
     }
+    countryIdDropDown.length.toString();
+    stateDropDown.length.toString();
+    stateIdDropDown.isEmpty.toString();
+    countryIdDropDown.isEmpty.toString();
+    
+  
 
     // void addAddress(
     //     {required String id,

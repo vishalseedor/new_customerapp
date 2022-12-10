@@ -60,7 +60,7 @@ class _ShowAllProductDesignState extends State<ShowAllProductDesign> {
         print('data empty in favourite');
 
         for (var i = 0; i < product.length; i++) {
-          product[i].isFavourite = false;
+          product[i].isFavourite= false;
         }
       }
     }
@@ -92,7 +92,7 @@ class _ShowAllProductDesignState extends State<ShowAllProductDesign> {
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              height: size.height * 0.15,
+              height: size.height * 0.10,
               width: size.width,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -150,19 +150,20 @@ class _ShowAllProductDesignState extends State<ShowAllProductDesign> {
                         // //     image: base64Decode(customBase64),
                         // //     subtitle: product.subtitle);
                       } else if (product.isFavourite == true) {
-                        print('fav loading is in complete');
-                        await Provider.of<FavouriteProvider>(context,
-                                listen: false)
-                            .deleteFavourite(
-                          prodId: product.productId,
-                          context: context,
-                        )
-                            .then((value) {
-                          if (value == 202) {
-                            product.isFavouriteButton();
-                          }
+                    await Provider.of<FavouriteProvider>(context, listen: false)
+                        .deleteFavourite(
+                      prodId: product.productId,
+                      context: context,
+                    )
+                        .then((value) {
+                      if (value == 202) {
+                        product.isFavourite = false;
+                        setState(() {
+
                         });
                       }
+                    });
+                  }
                       // print(product.productId + 'product id');
                       // print(favprodu.fav[0].id + 'product id');
                     },
