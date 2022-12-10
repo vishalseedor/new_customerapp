@@ -36,6 +36,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<FavouriteProvider>(context);
+    final product=Provider.of<ProductProvider>(context);
     final fav = data.fav;
     // Size size = MediaQuery.of(context).size;
     // final data = Provider.of<FavouriteProvider>(context, listen: false);
@@ -44,12 +45,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       return await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text("Clear Favourite"),
+          title: const Text("Clear Favourites"),
           content: const Text("Do you want to clear all Favourite Product"),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
                 data.removeAllFavProd(context: context);
+                product.clearfavrefresh();
+                
                 Navigator.of(ctx).pop();
               },
               child: const Text("Clear"),
@@ -85,7 +88,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           },
                           child: ElevatedButton(
                             child: Text(
-                              'Clear Favourite',
+                              'Clear Favourites',
                               style: TextStyle(
                                   color: CustomColor.whitecolor,
                                   fontWeight: FontWeight.bold),

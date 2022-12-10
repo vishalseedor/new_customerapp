@@ -26,6 +26,8 @@ import 'package:food_app/screen/FavouriteScreen/favourite_screen.dart';
 import 'package:food_app/screen/LoginScreen/login_screen.dart';
 import 'package:food_app/screen/bottom_app_screen.dart';
 import 'package:food_app/screen/cart_screen/cart_screen.dart';
+import 'package:food_app/screen/cart_screen/cart_summary_screen.dart';
+import 'package:food_app/screen/cart_screen/selected_address_screen.dart';
 import 'package:food_app/screen/categories_screen.dart';
 
 import 'package:food_app/screen/home&drawer/drawer_home_screen.dart';
@@ -135,7 +137,7 @@ class _MyAppState extends State<MyApp> {
                 varient: data['productVarientId'].toString());
           },
           'filter-screen': (context) => const FilterSCreen(),
-          'mycart_screen': (context) => const MyCartScreen(),
+          'mycart_screen': (context) => MyCartScreen(),
           'favourite-screen': (context) => const FavouriteScreen(),
           'Bottom-app-screen': (context) => const BottomAppScreen(),
           'Add-Address': (context) => const AddAddressScreen(),
@@ -145,6 +147,9 @@ class _MyAppState extends State<MyApp> {
           'edit-profile-screen': (context) => const EditProfileScreen(),
           'show-all-product': (context) => const ShowAllProductScreen(),
           'googlemap-traking': (context) => const GoogleMapTracking(),
+          'selectaddress_screen_design': (context) =>
+              const SelecteAddressScreen(),
+          'cartsummary_screen': (context) => const CartSummaryScreen(),
         },
       ),
     );

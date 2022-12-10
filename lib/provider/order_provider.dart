@@ -7,8 +7,10 @@ import 'package:food_app/models/address/address.dart';
 
 import 'package:food_app/models/cart.dart';
 import 'package:food_app/models/oder.dart';
+import 'package:food_app/provider/bottom_navigationbar_provider.dart';
 import 'package:food_app/provider/product_provider.dart';
 import 'package:food_app/provider/shareprefes_provider.dart';
+import 'package:food_app/screen/cart_screen/cart_screen.dart';
 import 'package:food_app/screen/splashscreen.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -88,7 +90,7 @@ class OrderProvider with ChangeNotifier {
                 addresstype: addrData[7].toString(),
                 area: addrData[2].toString(),
                 houseNumber: addrData[2].toString(),
-                landmark: '',
+                landmark: addrData[5].toString(),
                 id: '',
                 name: addrData[0].toString(),
                 phoneNumber: addrData[4].toString(),
@@ -181,6 +183,7 @@ class OrderProvider with ChangeNotifier {
     try {
       final data = Provider.of<UserDetails>(context, listen: false);
       final product = Provider.of<ProductProvider>(context, listen: false);
+      //final navigation = Provider.of<BottomNavigationBarProvider>(context);
 
       await data.getAllDetails();
       var headers = {
@@ -210,6 +213,14 @@ class OrderProvider with ChangeNotifier {
       print('http://eiuat.seedors.com:8290/seedor-api/order/create');
       if (response.statusCode == 200) {
         product.clearcartcount();
+        for (var i = 0; i < product.product.length; i++) {
+          print(product.product[i].productId);
+          if (product == product) {
+            print(product.product[i].productId.toString() + 'in if class');
+            product.product[i].isCart = false;
+          }
+        }
+        
 
         print('order successfully placed');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -232,12 +243,17 @@ class OrderProvider with ChangeNotifier {
           //   onPressed: () {},
           // ),
         ));
+      Navigator.pop(context);
 
-        Navigator.of(context).pushNamed(OrderScreen.routeName);
+       // Navigator.of(context).pushNamed(OrderScreen.routeName);
+       // navigation.currentIndex=2;
+        
       } else {
         print(response.reasonPhrase);
       }
-    } catch (e) {}
+    } catch (e) {
+      
+    }
   }
 
   void addorder({

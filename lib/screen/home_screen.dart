@@ -195,11 +195,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   icon: const Icon(
                     Icons.shopping_bag_outlined,
-                    size: 32,
+                    size: 35,
                     color: CustomColor.blackcolor,
                   )),
               Positioned(
-                top: 22,
+                top: 20,
                 child: Text(
                   product.cartProductTotal.length.toString(),
                   style: const TextStyle(
@@ -237,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           setState(() {
                             _searchList = product.searchQuery(value);
-                          });
+                           });
                         }
                       },
                       decoration: InputDecoration(
@@ -476,9 +476,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : const RecommandedProdWid()
                         ],
                       )
-                    : SizedBox(
+                    : Container(
                         height: size.height,
+                        padding: EdgeInsets.only(bottom: size.height * 0.35),
                         child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,

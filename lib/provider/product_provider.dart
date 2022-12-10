@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:food_app/models/product.dart';
 import 'package:food_app/provider/shareprefes_provider.dart';
+import 'package:food_app/screen/cart_screen/cart_errormessage_screen.dart';
+import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -489,6 +492,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   List<String> cartProductTotal = [];
+ // List<String> favProductTotal=[];
 
   void addcountcart({@required String id}) {
     cartProductTotal = [];
@@ -508,6 +512,11 @@ class ProductProvider with ChangeNotifier {
     cartProductTotal.remove(id);
     notifyListeners();
   }
+  // void countfavremove({@required String id}){
+  //   favProductTotal.remove(id);
+  //   notifyListeners();
+
+  // }
 
   void clearcartcount() {
     cartProductTotal.clear();
@@ -519,5 +528,10 @@ class ProductProvider with ChangeNotifier {
       _product[i].isCart = false;
     }
     notifyListeners();
+  }
+  void clearfavrefresh(){
+    for(var i=0;i<_product.length;i++){
+      _product[i].isFavourite=false;
+    }
   }
 }

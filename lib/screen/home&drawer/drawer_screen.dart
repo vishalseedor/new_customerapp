@@ -149,6 +149,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               }),
               drawerIcon('My Orders', Icons.shopping_cart_outlined, () {
                 Navigator.of(context).pushNamed(OrderScreen.routeName);
+               // navigation.currentIndex=2;
               }),
               SizedBox(
                 height: size.height * 0.03,

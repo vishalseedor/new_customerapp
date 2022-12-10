@@ -11,6 +11,7 @@ import 'package:food_app/provider/address/address_provider.dart';
 import 'package:food_app/provider/cart_provider.dart';
 import 'package:food_app/provider/order_provider.dart';
 import 'package:food_app/provider/product_provider.dart';
+import 'package:food_app/screen/cart_screen/cart_summary_screen.dart';
 import 'package:food_app/screen/manage_address/add_address.dart';
 
 import 'package:food_app/services/dialogbox.dart';
@@ -20,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import 'package:shimmer/shimmer.dart';
 
+import '../../screen/cart_screen/selected_address_screen.dart';
 import 'cart_product_design.dart';
 
 class CartScreenDesign extends StatefulWidget {
@@ -37,6 +39,7 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
   bool onlinepayment = true;
   bool offlinepayment = false;
   bool screenRefresh = false;
+  bool isloading = false;
   Timer timer;
   bool checkDelivery = false;
 
@@ -51,8 +54,11 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
     });
 
     final address = Provider.of<AddressProvider>(context).address;
+    final fun = Provider.of<AddressProvider>(context);
 
-    address.isEmpty ? selectedAddress = null : selectedAddress = address[0];
+    address.isEmpty
+        ? selectedAddress = null
+        : selectedAddress = fun.addressSingleData ?? address[0];
 
     // selectedAddress = address[0];
   }
@@ -163,19 +169,19 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
     final product = Provider.of<ProductProvider>(context, listen: false);
     final cart = Provider.of<CartProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
+
     Widget _seeMoreAddress() {
       return GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamed(AddAddressScreen.routeName);
           },
           child: const CircleAvatar(
-            backgroundColor: CustomColor.orangecolor,
-            radius: 30,
-            child: Icon(
-              Icons.add,
-              color: CustomColor.whitecolor,
-            ),
-          ));
+              backgroundColor: CustomColor.orangecolor,
+              radius: 30,
+              child: Icon(
+                Icons.add,
+                color: CustomColor.whitecolor,
+              )));
     }
 
     final data = Provider.of<CartProvider>(context);
@@ -183,7 +189,7 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
     // final total = data.totalAmount;
     final address = Provider.of<AddressProvider>(context).address;
     final charge = Provider.of<CartProvider>(context).cartCharges;
-
+    // print("grandprize2 ${data.totalprice}");
     void paywithcard(String amount) async {
       try {
         // ProgressDialog dialog = ProgressDialog(context: context);
@@ -363,61 +369,90 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
           Container(
             margin: const EdgeInsets.all(10),
             width: size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Delivery To :',
-                  style: Theme.of(context).textTheme.subtitle1,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Delivery To :',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      address.isEmpty
+                          ? InkWell(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(AddAddressScreen.routeName);
+                              },
+                              child: Shimmer.fromColors(
+                                baseColor: CustomColor.orangecolor,
+                                highlightColor:
+                                    CustomColor.orangecolor.withOpacity(0.4),
+                                child: Text(
+                                  'Click to add your Address',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                              ))
+                          : Column(
+                              children: List.generate(
+                                address.isEmpty ? 0 : 1,
+                                (index) => Text(
+                                  selectedAddress.name +
+                                          ',\n' +
+                                          selectedAddress.houseNumber +
+                                          ',\n' +
+                                          selectedAddress.area +
+                                          ',\n' +
+                                          selectedAddress.pincode +
+                                          ',\n' +
+                                          selectedAddress.phoneNumber +
+                                          ',\n' +
+                                          selectedAddress.town ??
+                                      'null'
+                                              ',' +
+                                          selectedAddress.state ??
+                                      'null'
+                                              ',' +
+                                          selectedAddress.addresstype ??
+                                      'Please select the address',
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                              ),
+                            )
+                    ],
+                  ),
                 ),
-                address.isEmpty
-                    ? InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(AddAddressScreen.routeName);
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    height: size.height * 0.04,
+                    width: size.width * 0.1,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SelecteAddressScreen()));
                         },
-                        child: Shimmer.fromColors(
-                          baseColor: CustomColor.orangecolor,
-                          highlightColor:
-                              CustomColor.orangecolor.withOpacity(0.4),
-                          child: Text(
-                            'Click to add your Address',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                        ))
-                    : Column(
-                        children: List.generate(
-                          address.isEmpty ? 0 : 1,
-                          (index) => Text(
-                            selectedAddress.name +
-                                    ',' +
-                                    selectedAddress.houseNumber +
-                                    ',' +
-                                    selectedAddress.area +
-                                    ',' +
-                                    selectedAddress.pincode +
-                                    ',' +
-                                    selectedAddress.phoneNumber +
-                                    ',' +
-                                    selectedAddress.town ??
-                                'null'
-                                        ',' +
-                                    selectedAddress.state ??
-                                'null'
-                                        ',' +
-                                    selectedAddress.addresstype ??
-                                'Please select the address',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                        ),
-                      )
+                        style: ElevatedButton.styleFrom(primary: CustomColor.grey500),
+                        child: Text(
+                          'Change Address',
+                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                        ),),
+                  ),
+                )
               ],
             ),
           ),
           address.isEmpty
               ? const Text('Their is no address to be selected')
-              : addressWid(),
+              : Container(),
+          // : addressWid(),
           AnimationLimiter(
               child: Column(
             children: List.generate(
@@ -441,88 +476,88 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                       ),
                     )),
           )),
-          SizedBox(
-            height: size.height * 0.02,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Check Delivery'),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      checkDelivery = !checkDelivery;
-                    });
-                    Timer(Duration(seconds: 1), () {
-                      if (checkDelivery == true) {
-                        final data =
-                            Provider.of<CartProvider>(context, listen: false);
-                        int quantity = 0;
-                        List<String> prodId = [];
-                        for (var i = 0; i < data.cartproduct.length; i++) {
-                          quantity += data.cartproduct[i].quantity;
+          // SizedBox(
+          //   height: size.height * 0.02,
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text('Check Delivery'),
+          //       GestureDetector(
+          //         onTap: () {
+          //           setState(() {
+          //             checkDelivery = !checkDelivery;
+          //           });
+          //           Timer(Duration(seconds: 1), () {
+          //             if (checkDelivery == true) {
+          //               final data =
+          //                   Provider.of<CartProvider>(context, listen: false);
+          //               int quantity = 0;
+          //               List<String> prodId = [];
+          //               for (var i = 0; i < data.cartproduct.length; i++) {
+          //                 quantity += data.cartproduct[i].quantity;
 
-                          prodId.add(data.cartproduct[i].id);
-                        }
-                        data.deliverycharge.toString();
+          //                 prodId.add(data.cartproduct[i].id);
+          //               }
+          //               data.deliverycharge.toString();
 
-                        data.finalDeliveryCharge(
-                            productIds: prodId.toString(),
-                            totalQuantity: quantity.toString(),
-                            totalPrice: data.totalprice);
-                        print(data.finalDeliveryCharge(
-                            productIds: prodId.toString(),
-                            totalQuantity: quantity.toString(),
-                            totalPrice: data.totalprice));
-                      } else {
-                        data.deliverycharge = '0.0';
-                        setState(() {});
-                      }
-                    });
-                  },
-                  child: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                          border: Border.all(color: CustomColor.orangecolor),
-                          color: checkDelivery
-                              ? CustomColor.orangecolor
-                              : Colors.white),
-                      child: checkDelivery
-                          ? Center(
-                              child: Icon(
-                              Icons.done,
-                              color: CustomColor.whitecolor,
-                            ))
-                          : Container()),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  address.isEmpty
-                      ? ''
-                      : checkDelivery
-                          ? 'Delivery Charge'
-                          : '',
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('₹ ' + data.deliverycharge.toString(),
-                    style: Theme.of(context).textTheme.subtitle2),
-              )
-            ],
-          ),
+          //               data.finalDeliveryCharge(
+          //                   productIds: prodId.toString(),
+          //                   totalQuantity: quantity.toString(),
+          //                   totalPrice: data.totalprice);
+          //               print(data.finalDeliveryCharge(
+          //                   productIds: prodId.toString(),
+          //                   totalQuantity: quantity.toString(),
+          //                   totalPrice: data.totalprice));
+          //             } else {
+          //               data.deliverycharge = '0.0';
+          //               setState(() {});
+          //             }
+          //           });
+          //         },
+          //         child: Container(
+          //             height: 30,
+          //             width: 30,
+          //             decoration: BoxDecoration(
+          //                 borderRadius: BorderRadius.circular(3),
+          //                 border: Border.all(color: CustomColor.orangecolor),
+          //                 color: checkDelivery
+          //                     ? CustomColor.orangecolor
+          //                     : Colors.white),
+          //             child: checkDelivery
+          //                 ? Center(
+          //                     child: Icon(
+          //                     Icons.done,
+          //                     color: CustomColor.whitecolor,
+          //                   ))
+          //                 : Container()),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: Text(
+          //         address.isEmpty
+          //             ? ''
+          //             : checkDelivery
+          //                 ? 'Delivery Charge'
+          //                 : '',
+          //         style: Theme.of(context).textTheme.subtitle2,
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: Text('₹ ' + data.deliverycharge.toString(),
+          //           style: Theme.of(context).textTheme.subtitle2),
+          //     )
+          //   ],
+          // ),
           // total > 500
           //     ? Padding(
           //         padding: const EdgeInsets.all(8.0),
@@ -572,19 +607,19 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Item Total',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    Text(
-                      '₹' + data.totalAmount.toString(),
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       'Item Total',
+                //       style: Theme.of(context).textTheme.subtitle2,
+                //     ),
+                //     Text(
+                //       '₹' + data.totalAmount.toString(),
+                //       style: Theme.of(context).textTheme.subtitle2,
+                //     ),
+                //   ],
+                // ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 //   children: [
@@ -598,19 +633,19 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                 //     )
                 //   ],
                 // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Additional Charge',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    Text(
-                      '₹' + data.alltotaladditionalcharge.toString(),
-                      style: Theme.of(context).textTheme.subtitle2,
-                    )
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       'Additional Charge',
+                //       style: Theme.of(context).textTheme.subtitle2,
+                //     ),
+                //     Text(
+                //       '₹' + data.alltotaladditionalcharge.toString(),
+                //       style: Theme.of(context).textTheme.subtitle2,
+                //     )
+                //   ],
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -620,6 +655,66 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                     // ),
                     // Text('₹' + data.taxcharges)
                   ],
+                ),
+                SizedBox(
+                  width: size.width,
+                  height: size.height * 0.065,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isloading = true;
+                        });
+                        Future.delayed(const Duration(seconds: 3), () {
+                          setState(() {
+                            isloading = false;
+                          });
+                        });
+                        final data =
+                            Provider.of<CartProvider>(context, listen: false);
+                        int quantity = 0;
+                        List<String> prodId = [];
+                        for (var i = 0; i < data.cartproduct.length; i++) {
+                          quantity += data.cartproduct[i].quantity;
+
+                          prodId.add(data.cartproduct[i].id);
+                        }
+                        data.deliverycharge.toString();
+
+                        data.finalDeliveryCharge(
+                            productIds: prodId.toString(),
+                            totalQuantity: quantity.toString(),
+                            totalPrice: data.totalprice);
+                        print(data.finalDeliveryCharge(
+                            productIds: prodId.toString(),
+                            totalQuantity: quantity.toString(),
+                            totalPrice: data.totalprice));
+                        Future.delayed(const Duration(seconds: 2), () {
+                          setState(() {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CartSummaryScreen(
+                                          cartProduct:
+                                              data.cartTotalProductdata,
+                                        )));
+                          });
+                        });
+                      },
+                      // child: Text(isloading ? 'Loading' : 'Process'),
+                      child: isloading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.white),
+                            )
+                          : Text("Process")
+
+                      // child: Text(
+
+                      //   "Process",
+                      //   style:
+                      //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      // ),
+                      ),
                 ),
 
                 // Row(
@@ -635,131 +730,131 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                 //     )
                 //   ],
                 // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Grand Total',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Text(
-                      '₹' + data.totalprice,
-                      style: Theme.of(context).textTheme.bodyText2,
-                    )
-                  ],
-                ),
-                const Divider(
-                  color: CustomColor.grey200,
-                ),
-                Container(
-                    width: size.width,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Select Your Payment Method',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    )),
-                ListTile(
-                  onTap: () {
-                    setState(() {
-                      offlinepayment = true;
-                      onlinepayment = false;
-                    });
-                  },
-                  leading: Image.asset(
-                    CustomImages.cashonDelivery,
-                    width: size.width * 0.1,
-                    height: size.height * 0.05,
-                  ),
-                  title: Text(
-                    'Cash on Delivery',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  trailing: Container(
-                    width: 18,
-                    height: 18,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: offlinepayment == true
-                              ? CustomColor.orangecolor
-                              : CustomColor.grey300,
-                        ),
-                        color: CustomColor.whitecolor,
-                        shape: BoxShape.circle),
-                    child: Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: CircleAvatar(
-                        backgroundColor: offlinepayment == true
-                            ? CustomColor.orangecolor
-                            : CustomColor.grey300,
-                      ),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    setState(() {
-                      onlinepayment = true;
-                      offlinepayment = false;
-                    });
-                  },
-                  leading: Image.asset(
-                    CustomImages.onlinePayment,
-                    width: size.width * 0.1,
-                    height: size.height * 0.05,
-                  ),
-                  title: Text(
-                    'pay with card',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  trailing: Container(
-                    width: 18,
-                    height: 18,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: onlinepayment == true
-                              ? CustomColor.orangecolor
-                              : CustomColor.grey300,
-                        ),
-                        color: CustomColor.whitecolor,
-                        shape: BoxShape.circle),
-                    child: Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: CircleAvatar(
-                        backgroundColor: onlinepayment == true
-                            ? CustomColor.orangecolor
-                            : CustomColor.grey300,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: size.width,
-                  height: size.height * 0.065,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        product.productpagerefresh();
-                        if (address.isEmpty) {
-                          _services.addressDialog(
-                              context: context,
-                              title: 'Address Empty',
-                              content: 'Please add your Address');
-                        } else {
-                          if (checkDelivery == true) {
-                            if (onlinepayment == true) {
-                              //  print('sushalt ::' + data.totalprice.toString() );
-                              paywithcard(data.totalprice.toString());
-                            } else if (offlinepayment == true) {
-                              cashOnDelivery(data.totalprice.toString());
-                            }
-                          }
-                        }
-                      },
-                      child: Text(address.isEmpty
-                          ? 'Select Your Address'
-                          : checkDelivery
-                              ? 'Check Out'
-                              : 'Select Delivery Charge')),
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       'Grand Total',
+                //       style: Theme.of(context).textTheme.bodyText2,
+                //     ),
+                //     Text(
+                //       '₹' + data.totalprice,
+                //       style: Theme.of(context).textTheme.bodyText2,
+                //     )
+                //   ],
+                // ),
+                // const Divider(
+                //   color: CustomColor.grey200,
+                // ),
+                // Container(
+                //     width: size.width,
+                //     alignment: Alignment.centerLeft,
+                //     child: Text(
+                //       'Select Your Payment Method',
+                //       style: Theme.of(context).textTheme.subtitle1,
+                //     )),
+                // ListTile(
+                //   onTap: () {
+                //     setState(() {
+                //       offlinepayment = true;
+                //       onlinepayment = false;
+                //     });
+                //   },
+                //   leading: Image.asset(
+                //     CustomImages.cashonDelivery,
+                //     width: size.width * 0.1,
+                //     height: size.height * 0.05,
+                //   ),
+                //   title: Text(
+                //     'Cash on Delivery',
+                //     style: Theme.of(context).textTheme.headline4,
+                //   ),
+                //   trailing: Container(
+                //     width: 18,
+                //     height: 18,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //           color: offlinepayment == true
+                //               ? CustomColor.orangecolor
+                //               : CustomColor.grey300,
+                //         ),
+                //         color: CustomColor.whitecolor,
+                //         shape: BoxShape.circle),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(3.0),
+                //       child: CircleAvatar(
+                //         backgroundColor: offlinepayment == true
+                //             ? CustomColor.orangecolor
+                //             : CustomColor.grey300,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // ListTile(
+                //   onTap: () {
+                //     setState(() {
+                //       onlinepayment = true;
+                //       offlinepayment = false;
+                //     });
+                //   },
+                //   leading: Image.asset(
+                //     CustomImages.onlinePayment,
+                //     width: size.width * 0.1,
+                //     height: size.height * 0.05,
+                //   ),
+                //   title: Text(
+                //     'pay with card',
+                //     style: Theme.of(context).textTheme.headline4,
+                //   ),
+                //   trailing: Container(
+                //     width: 18,
+                //     height: 18,
+                //     decoration: BoxDecoration(
+                //         border: Border.all(
+                //           color: onlinepayment == true
+                //               ? CustomColor.orangecolor
+                //               : CustomColor.grey300,
+                //         ),
+                //         color: CustomColor.whitecolor,
+                //         shape: BoxShape.circle),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(3.0),
+                //       child: CircleAvatar(
+                //         backgroundColor: onlinepayment == true
+                //             ? CustomColor.orangecolor
+                //             : CustomColor.grey300,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   width: size.width,
+                //   height: size.height * 0.065,
+                //   child: ElevatedButton(
+                //       onPressed: () {
+                //         product.productpagerefresh();
+                //         if (address.isEmpty) {
+                //           _services.addressDialog(
+                //               context: context,
+                //               title: 'Address Empty',
+                //               content: 'Please add your Address');
+                //         } else {
+                //           if (checkDelivery == true) {
+                //             if (onlinepayment == true) {
+                //               //  print('sushalt ::' + data.totalprice.toString() );
+                //               paywithcard(data.totalprice.toString());
+                //             } else if (offlinepayment == true) {
+                //               cashOnDelivery(data.totalprice.toString());
+                //             }
+                //           }
+                //         }
+                //       },
+                //       child: Text(address.isEmpty
+                //           ? 'Select Your Address'
+                //           : checkDelivery
+                //               ? 'Check Out'
+                //               : 'Select Delivery Charge')),
+                // ),
               ],
             ),
           )

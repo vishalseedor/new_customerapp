@@ -5,6 +5,7 @@ import 'package:food_app/provider/bottom_navigationbar_provider.dart';
 import 'package:provider/provider.dart';
 
 class EmptyCartScreen extends StatelessWidget {
+   static const routeName = 'emptycart-screen';
   const EmptyCartScreen({Key key}) : super(key: key);
 
   @override
@@ -24,7 +25,8 @@ class EmptyCartScreen extends StatelessWidget {
           ),
           Container(
               margin: const EdgeInsets.all(10),
-              child: const Text('Your Cart is Empty')),
+             child: const Text('Your Cart is Empty')
+              ),
           Container(
             margin: const EdgeInsets.all(10),
             // child: Text(

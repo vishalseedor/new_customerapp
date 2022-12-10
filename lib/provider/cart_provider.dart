@@ -6,6 +6,8 @@ import 'package:food_app/const/image_base64.dart';
 import 'package:food_app/models/cart.dart';
 import 'package:food_app/provider/product_provider.dart';
 import 'package:food_app/provider/shareprefes_provider.dart';
+import 'package:food_app/screen/cart_screen/cart_errormessage_screen.dart';
+import 'package:food_app/screen/cart_screen/cart_summary_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -14,11 +16,16 @@ import '../services/snackbar.dart';
 
 class CartProvider with ChangeNotifier {
   bool _isLoading = false;
+  bool _isError = false;
 
   GlobalSnackBar globalSnackBar = GlobalSnackBar();
 
   bool get isLoading {
     return _isLoading;
+  }
+
+  bool get isError {
+    return _isError;
   }
 
   List<CartModel> _cartproduct = [];
@@ -47,6 +54,7 @@ class CartProvider with ChangeNotifier {
   List<String> cartProductname = [];
   List<String> cartPrice = [];
   List<String> priceInclude = [];
+  List<CartQuantityAndId> cartQuantityNew = [];
   int productTemplateId;
   List<List<CartCharges>> totalCartProductcharge = [];
   List<CartCharges> cartCharges = [];
@@ -139,6 +147,7 @@ class CartProvider with ChangeNotifier {
     // final product = Provider.of<ProductProvider>(context, listen: false);
     try {
       _isLoading = true;
+      _isError = false;
 
       List<CartModel> loadData = [];
       List<int> id = [];
@@ -184,7 +193,7 @@ class CartProvider with ChangeNotifier {
                       .toString(),
                   price: price,
                   quantity: data));
-              cartQuantity.add(data);
+
               // _prodId = jsonData['entries']['entry'][i]['productid'];
 
               print('cart product id final' + loadData.toList().toString());
@@ -193,6 +202,7 @@ class CartProvider with ChangeNotifier {
           _cartproduct = loadData;
           _prodId = id;
           _isLoading = false;
+
           print('completed cart loading --->>');
           print(_cartproduct.length.toString() +
               'completed cart loading --->> length');
@@ -202,17 +212,20 @@ class CartProvider with ChangeNotifier {
           _prodId = [];
           // await getAllProductFavApi(_prodId);
           _isLoading = false;
+
           print('completed cart loading --->>');
           notifyListeners();
         }
       } else {
         _isLoading = false;
+
         print('completed cart loading --->>');
         notifyListeners();
       }
     } catch (e) {
       print(e.toString());
       _isLoading = false;
+      _isError = true;
       print('completed cart loading --->>');
       notifyListeners();
       print('Something went wrong jjdhjdgj welcome welcome');
@@ -241,19 +254,22 @@ class CartProvider with ChangeNotifier {
         "created_date": dateTimeNow,
         "quantity": quantity
       });
+      print("qqqq--->$quantity");
       print(body);
       var response = await http.post(
           Uri.parse('http://eiuat.seedors.com:8290/customer-app/addtocart'),
           headers: headers,
           body: body);
-      print('http://eiuat.seedors.com:8290/customer-app/addtocart' + 'cart');
+      print('http://eiuat.seedors.com:8290/customer-app/addtocart' +
+          'cartproductpost');
 
       statesCodec = response.statusCode.toString();
       var jsonData = json.decode(response.body);
-      print(jsonData);
+
+      print("newjason -->$jsonData");
       statesCodec = jsonData['code'];
       print(response.statusCode);
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 202) {
         print(response.body);
         print('successfully post');
@@ -384,6 +400,7 @@ class CartProvider with ChangeNotifier {
     for (var i = 0; i < _carttotalProductData.length; i++) {
       total += double.parse(_carttotalProductData[i].price) *
           (_cartproduct[i].quantity);
+      // print("totalamountsdsfsef-->$total");
     }
     return total.roundToDouble();
   }
@@ -395,13 +412,14 @@ class CartProvider with ChangeNotifier {
         if (cartTotalProductdata[i].cartCharge[j].price == '' ||
             cartTotalProductdata[i].cartCharge[j].price == null) {
         } else {
-          charge += double.parse(cartTotalProductdata[i].cartCharge[i].price) *
-              cartproduct[i].quantity;
+          charge += double.parse(cartTotalProductdata[i].cartCharge[j].price) *
+              _carttotalProductData[i].quantity;
 
-          //cartproduct[i].quantity;
+          // cartproduct[i].quantity;
         }
       }
     }
+
     print(charge.roundToDouble().toString() + 'total additinal charge data');
     return charge.roundToDouble();
   }
@@ -458,6 +476,9 @@ class CartProvider with ChangeNotifier {
     double totalCast = 0.0;
     totalCast =
         totalAmount + alltotaladditionalcharge + double.parse(deliverycharge);
+    // print('total amu $totalAmount');
+    // print(' total all $alltotaladditionalcharge');
+    // print('total del $deliverycharge');
 
     // print('success total' + totalCast.toString());
 
@@ -567,6 +588,8 @@ class CartProvider with ChangeNotifier {
       List<CartModel> loadData = [];
       totalCartProductcharge = [];
       cartCharges = [];
+      cartQuantity = [];
+      cartQuantityNew = [];
       List<int> id = [];
       notifyListeners();
       print('runing runing runiing');
@@ -591,10 +614,13 @@ class CartProvider with ChangeNotifier {
           print('cart product 200');
           for (var i = 0; i < jsonData['entries']['entry'].length; i++) {
             var data = int.parse(jsonData['entries']['entry'][i]['quantity']);
-            var price =
-                jsonData['entries']['entry'][i]['list_price'].toString() == ""
-                    ? '0'
-                    : jsonData['entries']['entry'][i]['list_price'].toString();
+            // var price = jsonData['entries']['entry'][i]
+            //                 ['standard_price_tax_included']
+            //             .toString() ==
+            //         ""
+            //     ? '0'
+            //     : jsonData['entries']['entry'][i]['standard_price_tax_included']
+            //         .toString();
             // print('welcome cart' + jsonData['entries']['entry'][i].toString());
             //[1107, 1068, 1105, 1093, 1111, 1073, 1076]
             // print(jsonData['entries']['entry'][i]['productid']);
@@ -604,6 +630,9 @@ class CartProvider with ChangeNotifier {
             print(id.toList().toString() + 'cart product id list');
             if (data >= 1) {
               cartQuantity.add(data);
+              cartQuantityNew.add(CartQuantityAndId(
+                  id: jsonData['entries']['entry'][i]['productid'],
+                  quantity: data));
               // loadData.add(CartModel(
               //     id: jsonData['entries']['entry'][i]['productid'].toString(),
               //     title: jsonData['entries']['entry'][i]['product_variant_id']
@@ -644,7 +673,8 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  Future getproductdetailsWithId({@required List<int> productIds}) async {
+  Future getproductdetailsWithId(
+      {@required List<int> productIds, @required BuildContext context}) async {
     print('product get working good --->> 1');
     var headers = {
       'Accept': 'application/json',
@@ -673,27 +703,37 @@ class CartProvider with ChangeNotifier {
       _carttotalProductData = [];
       cartProductids = [];
       cartPrice = [];
+      cartQuantity = [];
       priceInclude = [];
       cartProductname = [];
       productTemplateId;
+      int quantity;
       for (var i = 0; i < jsondata.length; i++) {
+        for (var j = 0; j < cartQuantityNew.length; j++) {
+          if (jsondata[i]['id'].toString() == cartQuantityNew[j].id) {
+            quantity = cartQuantityNew[j].quantity;
+          }
+        }
+        cartQuantity.add(quantity);
         cartProductids.add(jsondata[i]['id'].toString());
         cartPrice.add(jsondata[i]['standard_price_tax_included'].toString());
         priceInclude.add(jsondata[i]['price_included'].toString());
         cartProductname.add(jsondata[i]['display_name'].toString());
         productTemplateId = jsondata[i]['product_tmpl_id'][0];
-        await getDeliveryCharge(ids: jsondata[i]['product_tmpl_id'][0]);
+        await getAdditionalCharge(ids: jsondata[i]['product_tmpl_id'][0]);
       }
       print('product get working good --->> 4');
 
       notifyListeners();
     } else {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => CartErrorMessageScreen()));
       print(response.reasonPhrase);
       print('product get working good--->>5');
     }
   }
 
-  Future getDeliveryCharge({@required int ids}) async {
+  Future getAdditionalCharge({@required int ids}) async {
     print('delivery get working good --->> 1');
     var headers = {
       'Cookie':
@@ -703,6 +743,8 @@ class CartProvider with ChangeNotifier {
         Uri.parse(
             "http://eiuat.seedors.com:8290/seedor-api/charge/additional-charge?clientid=bookseedorpremiumuat&fields={'name','bi_product_template','price','product_id'}&variantids=[('bi_product_template','=',[$ids])]"),
         headers: headers);
+    print(
+        "http://eiuat.seedors.com:8290/seedor-api/charge/additional-charge?clientid=bookseedorpremiumuat&fields={'name','bi_product_template','price','product_id'}&variantids=[('bi_product_template','=',[$ids])]");
 
     print('delivery get working good --->> 2');
     print(response.statusCode.toString() + 'delivery get working good 123');
@@ -785,6 +827,7 @@ class CartProvider with ChangeNotifier {
     for (var i = 0; i < prodId.length; i++) {
       _carttotalProductData.add(CartTotalProductModal(
           id: cartProductids[i].toString(),
+          quantity: int.parse(cartQuantity[i].toString()),
           title: cartProductname[i].toString(),
           price: cartPrice[i].toString(),
           cartCharge: totalCartProductcharge[i].toSet().toList()));
@@ -795,4 +838,11 @@ class CartProvider with ChangeNotifier {
           'vanthuru da vanthuruuuu cart charge');
     }
   }
+}
+
+class CartQuantityAndId {
+  final String id;
+  final int quantity;
+
+  CartQuantityAndId({@required this.id, @required this.quantity});
 }

@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:food_app/const/config.dart';
 import 'package:food_app/models/favourite.dart';
+import 'package:food_app/provider/product_provider.dart';
 import 'package:food_app/provider/shareprefes_provider.dart';
 import 'package:food_app/services/snackbar.dart';
 import 'package:http/http.dart' as http;
@@ -265,6 +266,7 @@ class FavouriteProvider with ChangeNotifier {
       {@required String prodId, @required BuildContext context}) async {
     try {
       final user = Provider.of<UserDetails>(context, listen: false);
+      
       await user.getAllDetails();
       var headers = {
         'Content-Type': 'application/json',
@@ -285,6 +287,7 @@ class FavouriteProvider with ChangeNotifier {
       print(response.body.toString() + 'sgysgygygygg');
       if (response.statusCode == 202) {
         _fav.removeWhere((element) => element.id == prodId);
+      
 
         notifyListeners();
         globalSnackBar.generalSnackbar(
@@ -300,6 +303,7 @@ class FavouriteProvider with ChangeNotifier {
   Future<void> removeAllFavProd({BuildContext context}) async {
     try {
       var data = Provider.of<UserDetails>(context, listen: false);
+      var product=Provider.of<ProductProvider>(context,listen: false);
       await data.getAllDetails();
       var header = {
         'Content-Type': 'application/json',
@@ -319,6 +323,8 @@ class FavouriteProvider with ChangeNotifier {
         globalSnackBar.generalSnackbar(
             context: context, text: 'Your favourite is clear');
         _fav.clear();
+        product.clearfavrefresh();
+        
 
         notifyListeners();
       } else {

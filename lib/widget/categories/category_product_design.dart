@@ -254,6 +254,12 @@ class _CategoryProductDesignState extends State<CategoryProductDesign> {
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   AutoSizeText('₹ ' + categorydata.price.toString()),
+                    Text(
+                  categorydata.taxtext ?? '',
+                    style:
+                        TextStyle(color: CustomColor.bluecolor, fontSize: 15),
+                    // style: Theme.of(context).textTheme.subtitle2,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

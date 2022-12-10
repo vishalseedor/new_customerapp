@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 class CartProductDesign extends StatefulWidget {
   final String productId;
   final int index;
+  bool isError = false;
   bool screenRefresh;
   CartProductDesign(
       {Key key,
@@ -136,7 +137,7 @@ class _CartProductDesignState extends State<CartProductDesign> {
                                       )
                                           .then((value) {
                                         setState(() {
-                                          cartProduct.quantity--;
+                                          // cartProduct.quantity--;
                                           cart
                                               .cartTotalProductdata[
                                                   widget.index]
@@ -166,7 +167,9 @@ class _CartProductDesignState extends State<CartProductDesign> {
                                     )
                                         .then((value) {
                                       setState(() {
-                                        cartProduct.quantity++;
+                                        // cartProduct.quantity++;
+                                        print(
+                                            "++---> ${cartProduct.quantity++}");
                                       });
                                     });
                                     // cart.addToCart(
@@ -212,43 +215,43 @@ class _CartProductDesignState extends State<CartProductDesign> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: 25,
-                              height: 25,
-                              child: Card(
-                                color: CustomColor.greencolor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: const Icon(
-                                  Icons.done,
-                                  size: 12,
-                                  color: CustomColor.whitecolor,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                                flex: 16,
-                                child: Text(
-                                  cart.cartTotalProductdata[widget.index]
-                                      .cartCharge[index].name,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                )),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  '₹' +
-                                      (double.parse(cart
-                                                  .cartTotalProductdata[
-                                                      widget.index]
-                                                  .cartCharge[index]
-                                                  .price) *
-                                              cartProduct.quantity)
-                                          .toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.subtitle2,
-                                )),
+                            // Container(
+                            //   width: 25,
+                            //   height: 25,
+                            //   child: Card(
+                            //     color: CustomColor.greencolor,
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(50),
+                            //     ),
+                            //     // child: const Icon(
+                            //     //   Icons.done,
+                            //     //   size: 12,
+                            //     //   color: CustomColor.whitecolor,
+                            //     // ),
+                            //   ),
+                            // ),
+                            // Expanded(
+                            //     flex: 16,
+                            //     child: Text(
+                            //       cart.cartTotalProductdata[widget.index]
+                            //           .cartCharge[index].name,
+                            //       overflow: TextOverflow.ellipsis,
+                            //       style: Theme.of(context).textTheme.subtitle2,
+                            //     )),
+                            // Expanded(
+                            //     flex: 3,
+                            //     child: Text(
+                            //       '₹' +
+                            //           (double.parse(cart
+                            //                       .cartTotalProductdata[
+                            //                           widget.index]
+                            //                       .cartCharge[index]
+                            //                       .price) *
+                            //                   cartProduct.quantity)
+                            //               .toString(),
+                            //       overflow: TextOverflow.ellipsis,
+                            //       style: Theme.of(context).textTheme.subtitle2,
+                            //     )),
                           ],
                         ),
                       );
