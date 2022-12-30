@@ -88,7 +88,7 @@ class _RecommandedDesignState extends State<RecommandedDesign> {
           alignment: Alignment.topRight,
           children: [
             Container(
-              height: size.height * 0.27,
+              height: size.height * 0.28,
               width: size.width * 0.85,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

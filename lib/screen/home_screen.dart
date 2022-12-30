@@ -184,30 +184,58 @@ class _HomeScreenState extends State<HomeScreen> {
           style: Theme.of(context).textTheme.bodyText2,
         ),
         actions: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    navigation.currentIndex = 2;
-
-                    //Navigator.of(context).pushNamed(MyCartScreen.routeName);
-                  },
-                  icon: const Icon(
+           IconButton(
+              onPressed: () {
+                // Navigator.of(context).pop(navigation.currentIndex = 2);
+                // Navigator.of(context).pushNamed(BottomAppScreen.routeName);
+                 navigation.currentIndex = 2;
+              },
+              icon: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Icon(
                     Icons.shopping_bag_outlined,
-                    size: 35,
                     color: CustomColor.blackcolor,
-                  )),
-              Positioned(
-                top: 20,
-                child: Text(
-                  product.cartProductTotal.length.toString(),
-                  style: const TextStyle(
-                      color: CustomColor.orangecolor, fontSize: 13),
-                ),
-              )
-            ],
-          )
+                    size: 33,
+                  ),
+                  Positioned(
+                    bottom: 1,
+                    child: Text(
+                      // cart.cartproduct.length.toString(),
+                      product.cartProductTotal.length.toString(),
+                      style: const TextStyle(
+                          color: CustomColor.orangecolor, fontSize: 13),
+                    ),
+                  )
+                ],
+              ))
+          // Stack(
+          //   alignment: Alignment.center,
+          //   children: [
+          //     IconButton(
+          //         onPressed: () {
+          //           navigation.currentIndex = 2;
+
+          //           //Navigator.of(context).pushNamed(MyCartScreen.routeName);
+          //         },
+          //         icon: const Icon(
+          //           Icons.shopping_bag_outlined,
+          //           size: 35,
+          //           color: CustomColor.blackcolor,
+          //         )),
+          //     Positioned(
+          //      // top:size.height * 0.02,
+          //      bottom: 1,
+          //      top: size.height*0.016,
+          //       child: Text(
+          //         product.cartProductTotal.toSet().length.toString(),
+                  
+          //         style: const TextStyle( 
+          //             color: CustomColor.orangecolor, fontSize: 13),
+          //       ),
+          //     )
+          //   ],
+          // )
         ],
       ),
       // drawer: Drawer(),
@@ -484,6 +512,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             physics: const BouncingScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
+                                  
                                     crossAxisCount: 2,
                                     childAspectRatio: 1 / 1.5,
                                     crossAxisSpacing: size.width * 0.02,
@@ -493,6 +522,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return ChangeNotifierProvider.value(
                                 value: _searchList[index],
                                 child: const ShowAllProductDesign(),
+                                
                               );
                             }),
                       )

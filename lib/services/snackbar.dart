@@ -26,7 +26,7 @@ class GlobalSnackBar {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-              height: 40,
+              height: 50,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -13,6 +13,7 @@ class CartProductSummaryDesign extends StatefulWidget {
   final String productId;
   final int index;
   bool screenRefresh;
+  bool islOading=false;
   CartProductSummaryDesign(
       {Key key,
       @required this.productId,

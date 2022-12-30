@@ -10,6 +10,10 @@ class ProfileModel with ChangeNotifier {
   final String stateid;
   final String street;
   final String streetTwo;
+  final String country;
+  final String state;
+  final String pincode;
+  final String image;
 
   ProfileModel(
       {@required this.id,
@@ -20,14 +24,32 @@ class ProfileModel with ChangeNotifier {
       @required this.name,
       @required this.stateid,
       @required this.street,
-      @required this.streetTwo});
+      @required this.streetTwo,
+      @required this.country,
+      @required this.state,
+      @required this.pincode,
+      @required this.image
+      });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     String stateId;
+    String state;
+    String country;
     if (json['primary_address'][0]['state_id'].toString() != 'false') {
-      stateId = json['primary_address'][0]['state_id'][1].toString();
+      stateId = json['primary_address'][0]['state_id'][0].toString();
+       state = json['primary_address'][0]['state_id'][1].toString();
     } else {
       stateId = 'Not yet Updated';
+      state = 'State';
+    }
+
+
+    if (json['primary_address'][0]['country_id'].toString() != 'false') {
+      
+       country = json['primary_address'][0]['country_id'][1].toString();
+    } else {
+     
+      country = 'Country';
     }
 
     return ProfileModel(
@@ -40,6 +62,10 @@ class ProfileModel with ChangeNotifier {
       stateid: stateId,
       streetTwo: json['primary_address'][0]['street2'].toString(),
       street: json['primary_address'][0]['street'].toString(),
+      country: country,
+      state: state,
+      pincode:json['primary_address'][0]['zip'].toString(),
+      image: json['primary_address'][0]['image_1024'].toString()
     );
   }
 }

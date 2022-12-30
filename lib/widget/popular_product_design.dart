@@ -173,7 +173,7 @@ class _PopularProductDesignState extends State<PopularProductDesign> {
                       //   style: Theme.of(context).textTheme.caption,
                       // ),
                       Container(
-                          width: size.width * 0.28,
+                          width: size.width * 0.27,
                           height: size.height * 0.04,
                           decoration: BoxDecoration(
                               color: CustomColor.orangecolor,
@@ -223,7 +223,7 @@ class _PopularProductDesignState extends State<PopularProductDesign> {
                               ElevatedButton(
                                   child: Text(product.isCart == true
                                       ? 'In cart'
-                                      : 'Add to cart'),
+                                      : 'Do cart'),
                                   onPressed: () {
                                     print('hellooooooo ---->>>>');
                                     if (product.isCart == true) {
@@ -270,9 +270,7 @@ class _PopularProductDesignState extends State<PopularProductDesign> {
                                       //     quantity: product.quantity);
 
                                     }
-                                  })
-                                  
-                                  ),
+                                  })),
 
                       IconButton(
                           onPressed: () async {

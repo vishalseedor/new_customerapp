@@ -22,6 +22,11 @@ import 'favourite_provider.dart';
 
 class ProductProvider with ChangeNotifier {
   GlobalSnackBar snackBar = GlobalSnackBar();
+Product _productModel;
+Product get productModel{
+  return _productModel;
+}
+
   bool _data = true;
   bool get data {
     // boolData();
@@ -382,9 +387,11 @@ class ProductProvider with ChangeNotifier {
       print(response.body);
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body);
+        cartProductTotal = [];
         for (var i = 0; i < extractedData.length; i++) {
           if (extractedData[i]['in_cart'] == true) {
             addcountcart(id: extractedData[i]['id'].toString());
+            print((extractedData[i]['id'].toString()+'add count value print'));
           }
 
           print(extractedData[i]['display_name']);
@@ -482,7 +489,7 @@ class ProductProvider with ChangeNotifier {
     print(filter.toList().length.toString() + 'length of set in filter');
   }
 
-  List<Product> searchQuery(String text) {
+  List<Product>  searchQuery(String text) {
     var searchList = _product
         .where((element) =>
             element.title.toLowerCase().contains(text.toLowerCase()))
@@ -495,17 +502,21 @@ class ProductProvider with ChangeNotifier {
  // List<String> favProductTotal=[];
 
   void addcountcart({@required String id}) {
-    cartProductTotal = [];
-    for (var i = 0; i < _product.length; i++) {
-      if (_product[i].productId == id) {
-        cartProductTotal.add(_product[i].productId);
-      }
-    }
+    // cartProductTotal = [];
+    // for (var i = 0; i < _product.length; i++) {
+    //   if (_product[i].productId == id) {
+        cartProductTotal.add(id);
+        print(id+'count id va');
+        
+    //   }
+    // }
   }
 
   void countproductsadd({@required String id}) {
     cartProductTotal.add(id);
-    notifyListeners();
+     notifyListeners();
+    
+   
   }
 
   void countproductremove({@required String id}) {

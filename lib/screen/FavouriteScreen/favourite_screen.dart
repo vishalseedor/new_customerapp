@@ -79,7 +79,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: data.fav.isEmpty
+              child: 
+              data.fav.isEmpty
                   ? Container()
                   : Center(
                       child: InkWell(

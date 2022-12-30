@@ -264,8 +264,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           IconButton(
               onPressed: () {
                 // Navigator.of(context).pop(navigation.currentIndex = 2);
-                Navigator.of(context).pushNamed(BottomAppScreen.routeName);
-                navigation.currentIndex = 2;
+                // Navigator.of(context).pushNamed(BottomAppScreen.routeName);
+                //  navigation.currentIndex = 2;
               },
               icon: Stack(
                 alignment: Alignment.center,
@@ -273,15 +273,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   const Icon(
                     Icons.shopping_bag_outlined,
                     color: CustomColor.blackcolor,
-                    size: 32,
+                    size: 33,
+                    
                   ),
                   Positioned(
-                    bottom: 2,
+                    bottom: 1,
                     child: Text(
                       // cart.cartproduct.length.toString(),
                       product.cartProductTotal.length.toString(),
                       style: const TextStyle(
                           color: CustomColor.orangecolor, fontSize: 13),
+                          
                     ),
                   )
                 ],
@@ -753,88 +755,146 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 width: size.width,
                 height: size.height * 0.06,
-                child: ElevatedButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.shopping_bag),
-                      Text(productDetails.isCart == true
-                          ? 'Already in bag'
-                          : 'Bag It'),
-                    ],
-                  ),
-                  onPressed: () {
-                    print('hellooooooo ---->>>>');
-                    if (productDetails.isCart == true) {
-                      _services.customDialog(context, productDetails.title,
-                          'This product is already in cart');
-                    } else {
-                      cart
-                          .cartProductPost(
-                              context: context,
-                              productId: productDetails.productId,
-                              quantity: 1)
-                          .then((value) {
-                        if (value == '200') {
-                          product.countproductsadd(
-                              id: productDetails.productId);
-                          productDetails.isCart = true;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              _snackbar.customSnackbar(context: context));
-                          productDetails.isCartButton();
+                child:   ElevatedButton(
+                  
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        const Icon(Icons.shopping_bag),
+                                      Text(productDetails.isCart == true
+                                          ? 'Already in bag'
+                                          : 'Bag It'),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    print('hellooooooo ---->>>>');
+                                    if (productDetails.isCart == true) {
+                                      _services.customDialog(
+                                          context,
+                                          productDetails.title,
+                                          'This product is already in cart');
+                                    } else {
+                                      cart
+                                          .cartProductPost(
+                                              context: context,
+                                              productId: productDetails.productId,
+                                              quantity: 1)
+                                          .then((value) {
+                                        if (value == '200') {
+                                          product.countproductsadd(
+                                              id: productDetails.productId);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                                  _snackbar.customSnackbar(
+                                                      context: context));
+                                          productDetails.isCartButton();
+                                        }
+                                      });
+                                      // cart
+                                      //     .cartProductPost(
+                                      //         context: context,
+                                      //         productId: product.productId,
+                                      //         quantity: 1)
+                                      //     .then((value) {
+                                      //   cart
+                                      //       .cartProductId(context: context)
+                                      //       .then((value) {
+                                      //     cartIconButtton();
+                                      //     product.isCart = true;
+                                      //   });
+                                      // });
 
-                          // setState(() {});
-                        }
-                      });
-                      // cart
-                      //     .cartProductPost(
-                      //         context: context,
-                      //         productId: product.productId,
-                      //         quantity: 1)
-                      //     .then((value) {
-                      //   cart
-                      //       .cartProductId(context: context)
-                      //       .then((value) {
-                      //     cartIconButtton();
-                      //     product.isCart = true;
-                      //   });
-                      // });
+                                      // cart.addToCart(
+                                      //     id: product.productId,
+                                      //     title: product.title,
+                                      //     price: product.price.roundToDouble(),
+                                      //     imageUrl: base64Decode(customBase64),
+                                      //     quantity: product.quantity);
 
-                      // cart.addToCart(
-                      //     id: product.productId,
-                      //     title: product.title,
-                      //     price: product.price.roundToDouble(),
-                      //     imageUrl: base64Decode(customBase64),
-                      //     quantity: product.quantity);
+                                    }
+                                  }),
+                // child: ElevatedButton(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       const Icon(Icons.shopping_bag),
+                //       Text(productDetails.isCart == true
+                //           ? 'Already in bag'
+                //           : 'Bag It'),
+                //     ],
+                //   ),
+                //   onPressed: () {
+                //     print('hellooooooo ---->>>>');
+                //     if (productDetails.isCart == true) {
+                //       _services.customDialog(context, productDetails.title,
+                //           'This product is already in cart');
+                //     } else {
+                //       cart
+                //           .cartProductPost(
+                //               context: context,
+                //               productId: productDetails.productId,
+                //               quantity: 1)
+                //           .then((value) {
+                //         if (value == '200') {
+                //           product.countproductsadd(
+                //               id: productDetails.productId);
+                //           productDetails.isCart = true;
+                //           ScaffoldMessenger.of(context).showSnackBar(
+                //               _snackbar.customSnackbar(context: context));
+                //           productDetails.isCartButton();
 
-                    }
-                    // if (productDetails.isCart) {
-                    //   _services.customDialog(context, productDetails.title,
-                    //       'This product is already in cart');
-                    // } else {
-                    //   cart
-                    //       .cartProductPost(
-                    //           context: context,
-                    //           productId: productDetails.productId,
-                    //           quantity: 1)
-                    //       .then((value) {
-                    //     cart.cartProductId(context: context).then((value) {
-                    //       cartIconButtton();
-                    //       productDetails.isCart = true;
-                    //     });
-                    //   });
+                //           // setState(() {}); 
+                //         }
+                //       });
+                //       // cart
+                //       //     .cartProductPost(
+                //       //         context: context,
+                //       //         productId: product.productId,
+                //       //         quantity: 1)
+                //       //     .then((value) {
+                //       //   cart
+                //       //       .cartProductId(context: context)
+                //       //       .then((value) {
+                //       //     cartIconButtton();
+                //       //     product.isCart = true;
+                //       //   });
+                //       // });
 
-                    //   // cart.addToCart(
-                    //   //     id: product.productId,
-                    //   //     title: product.title,
-                    //   //     price: product.price.roundToDouble(),
-                    //   //     imageUrl: base64Decode(customBase64),
-                    //   //     quantity: product.quantity);
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //       _snackbar.customSnackbar(context: context));
-                    // }
-                  },
-                ),
+                //       // cart.addToCart(
+                //       //     id: product.productId,
+                //       //     title: product.title,
+                //       //     price: product.price.roundToDouble(),
+                //       //     imageUrl: base64Decode(customBase64),
+                //       //     quantity: product.quantity);
+
+                //     }
+                //     // if (productDetails.isCart) {
+                //     //   _services.customDialog(context, productDetails.title,
+                //     //       'This product is already in cart');
+                //     // } else {
+                //     //   cart
+                //     //       .cartProductPost(
+                //     //           context: context,
+                //     //           productId: productDetails.productId,
+                //     //           quantity: 1)
+                //     //       .then((value) {
+                //     //     cart.cartProductId(context: context).then((value) {
+                //     //       cartIconButtton();
+                //     //       productDetails.isCart = true;
+                //     //     });
+                //     //   });
+
+                //     //   // cart.addToCart(
+                //     //   //     id: product.productId,
+                //     //   //     title: product.title,
+                //     //   //     price: product.price.roundToDouble(),
+                //     //   //     imageUrl: base64Decode(customBase64),
+                //     //   //     quantity: product.quantity);
+                //     //   ScaffoldMessenger.of(context).showSnackBar(
+                //     //       _snackbar.customSnackbar(context: context));
+                //     // }
+                //   },
+                // ),
               ),
             )
           ],

@@ -219,7 +219,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           const Text('Continue With Facebook')
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                     ),
                   ),
                   SizedBox(
@@ -249,7 +251,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        
+                      },
                     ),
                   )
                 ],
@@ -264,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget useremail() {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.07,
+      height: size.height * 0.06,
       decoration: BoxDecoration(
           color: CustomColor.grey100, borderRadius: BorderRadius.circular(10)),
       child: Theme(
@@ -272,25 +276,27 @@ class _LoginScreenState extends State<LoginScreen> {
             colorScheme: ThemeData().colorScheme.copyWith(
                   primary: CustomColor.orangecolor,
                 )),
-        child: TextFormField(
-          controller: _useremail,
-          onChanged: (value) {
-            value = _useremail.text.trim();
-          },
-          style: CustomThemeData().clearStyle(),
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
-              hintText: 'seedorsoft@gmail.com',
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              prefixIcon: Icon(
-                Icons.email_outlined,
-              )),
-          // validator: validateEmail,
-          // onSaved: (val) {
-          //   val = _useremail.text;
-          // },
+        child: Center(
+          child: TextFormField(
+            controller: _useremail,
+            onChanged: (value) {
+              value = _useremail.text.trim();
+            },
+            style: CustomThemeData().clearStyle(),
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+                hintText: 'seedorsoft@gmail.com',
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                )),
+            // validator: validateEmail,
+            // onSaved: (val) {
+            //   val = _useremail.text;
+            // },
+          ),
         ),
       ),
     );
@@ -299,7 +305,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget userpassword() {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.07,
+      height: size.height * 0.06,
       decoration: BoxDecoration(
           color: CustomColor.grey100, borderRadius: BorderRadius.circular(10)),
       child: Theme(
@@ -307,34 +313,36 @@ class _LoginScreenState extends State<LoginScreen> {
             colorScheme: ThemeData().colorScheme.copyWith(
                   primary: CustomColor.orangecolor,
                 )),
-        child: TextFormField(
-          controller: _userPasword,
-          onChanged: (value) {
-            value = _userPasword.text.trim();
-          },
-          style: CustomThemeData().clearStyle(),
-          obscureText: _obscureText,
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-              hintText: 'Password',
-              suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                  icon: Icon(
-                      _obscureText ? Icons.visibility_off : Icons.visibility)),
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              prefixIcon: const Icon(
-                Icons.lock,
-              )),
-          // validator: validatePassword,
-          // onSaved: (val) {
-          //   val = _userPasword.text;
-          // },
+        child: Center(
+          child: TextFormField(
+            controller: _userPasword,
+            onChanged: (value) {
+              value = _userPasword.text.trim();
+            },
+            style: CustomThemeData().clearStyle(),
+            obscureText: _obscureText,
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+                hintText: 'Password',
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                    icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility)),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                prefixIcon: const Icon(
+                  Icons.lock,
+                )),
+            // validator: validatePassword,
+            // onSaved: (val) {
+            //   val = _userPasword.text;
+            // },
+          ),
         ),
       ),
     );

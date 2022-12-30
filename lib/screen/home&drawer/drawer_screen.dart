@@ -83,16 +83,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: AssetImage("Assets/Images/person.webp"),
-                                fit: BoxFit.fill)
-                            // borderRadius: BorderRadius.circular(10),
-                            // image: DecorationImage(
-                            //     image: MemoryImage(data.imageUrl),
-                            //     fit: BoxFit.fill)),
-                            ),
+                        child:     CircleAvatar(
+                          backgroundColor: CustomColor.blackcolor,
+                          backgroundImage:MemoryImage(data.imageUrl),
+                          radius: 40,
+                          
+                          //     AssetImage('Assets/Images/person.webp'),
+                          // radius: 80,
+                        ),
+                        // decoration: BoxDecoration(
+                        //   borderRadius:BorderRadius.circular(10) ,
+                        //     shape: BoxShape.circle,
+                        
+                              
+                        //     // borderRadius: BorderRadius.circular(10),
+                        //     // image: DecorationImage(
+                        //     //     image: MemoryImage(data.imageUrl),
+                        //     //     fit: BoxFit.fill)),
+                        //     ),
                       ),
                     ),
                     const SizedBox(
@@ -223,7 +231,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ],
                         ));
                 final prefs = await SharedPreferences.getInstance();
-                prefs.clear().then((value) {});
+                prefs.clear().then((value) {
+                  
+                });
               }),
             ],
           ),

@@ -439,10 +439,10 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                                   builder: (context) =>
                                       const SelecteAddressScreen()));
                         },
-                        style: ElevatedButton.styleFrom(primary: CustomColor.grey500),
+                        style: ElevatedButton.styleFrom(primary: CustomColor.orangecolor),
                         child: Text(
                           'Change Address',
-                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),
                         ),),
                   ),
                 )

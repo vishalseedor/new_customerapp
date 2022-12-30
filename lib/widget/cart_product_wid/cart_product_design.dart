@@ -167,6 +167,10 @@ class _CartProductDesignState extends State<CartProductDesign> {
                                     )
                                         .then((value) {
                                       setState(() {
+                                            cart
+                                              .cartTotalProductdata[
+                                                  widget.index]
+                                              .quantity++;
                                         // cartProduct.quantity++;
                                         print(
                                             "++---> ${cartProduct.quantity++}");

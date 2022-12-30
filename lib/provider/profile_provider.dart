@@ -56,6 +56,7 @@ class ProfileProvider with ChangeNotifier {
           Uri.parse(
               'http://eiuat.seedors.com:8290/customer-app/userprofile?clientid=$client_id&username=${prefs.email}'),
           headers: headers);
+          print('http://eiuat.seedors.com:8290/customer-app/userprofile?clientid=$client_id&username=${prefs.email}');
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);

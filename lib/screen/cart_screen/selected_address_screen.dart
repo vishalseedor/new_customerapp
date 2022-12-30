@@ -282,8 +282,8 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                 child: Container(
                   margin: const EdgeInsets.all(15),
                   width: size.width * 0.4,
-                  // height: size.height,
-                  // height: double.infinity,
+                  //height: size.height,
+                 // height: double.infinity,
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: selectedAddress == address[index]
@@ -299,8 +299,8 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                         height: size.height * 0.3,
                         child: Card(
                             margin: const EdgeInsets.all(0),
-                            // shape: RoundedRectangleBorder(
-                            //     borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               // mainAxisAlignment:
@@ -312,7 +312,8 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                                   address[index].name,
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
-                                  //style: Theme.of(context).textTheme.,
+                                 // style: Theme.of(context).textTheme.subtitle2,
+                                  style: TextStyle(color: CustomColor.bluecolor,fontSize: 13,fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   address[index].houseNumber,
@@ -331,7 +332,7 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
                                   //style: Theme.of(context).textTheme.subtitle2,
-                                  style: TextStyle(color: CustomColor.bluecolor,fontSize: 15,fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: CustomColor.bluecolor,fontSize: 12,fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   address[index].state,
@@ -405,12 +406,13 @@ class _SelecteAddressScreenState extends State<SelecteAddressScreen> {
           // )
         ],
       ),
-      body: SingleChildScrollView(
+      body:Container(
+      //  height: size.height*0.1,
         child: Column(
           children: [
             addressWid(),
             SizedBox(
-              height: size.height * 0.05,
+              height: size.height * 0.03, 
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

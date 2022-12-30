@@ -11,6 +11,7 @@ import 'package:food_app/provider/auth_provider.dart';
 import 'package:food_app/provider/bottom_navigationbar_provider.dart';
 import 'package:food_app/provider/cart_provider.dart';
 import 'package:food_app/provider/categories_provider.dart';
+import 'package:food_app/provider/claim_management_provider.dart';
 import 'package:food_app/provider/device_info.dart';
 import 'package:food_app/provider/favourite_provider.dart';
 import 'package:food_app/provider/filter_provider.dart';
@@ -29,6 +30,9 @@ import 'package:food_app/screen/cart_screen/cart_screen.dart';
 import 'package:food_app/screen/cart_screen/cart_summary_screen.dart';
 import 'package:food_app/screen/cart_screen/selected_address_screen.dart';
 import 'package:food_app/screen/categories_screen.dart';
+import 'package:food_app/screen/claim_listview.dart';
+import 'package:food_app/screen/claim_management_screen.dart';
+import 'package:food_app/screen/get_claim_screen.dart';
 
 import 'package:food_app/screen/home&drawer/drawer_home_screen.dart';
 import 'package:food_app/screen/filter_screen.dart';
@@ -50,6 +54,7 @@ import 'package:food_app/screen/successful_password.dart';
 
 import 'package:food_app/services/location.dart';
 import 'package:food_app/widget/categories/categories_wid.dart';
+import 'package:food_app/widget/claim_design.dart';
 import 'package:provider/provider.dart';
 
 import 'screen/google_maps/googletracking.dart';
@@ -111,7 +116,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (ctx) => AddressData()),
         ChangeNotifierProvider(create: (ctx) => UserDetails()),
         ChangeNotifierProvider(create: (ctx) => FilterProvider()),
-        ChangeNotifierProvider(create: (ctx) => ProductVarientProvider()),
+        ChangeNotifierProvider(create: (ctx) => ProductVarientProvider(),),
+        ChangeNotifierProvider(create: (ctx)=>ClaimManagementProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -150,6 +156,18 @@ class _MyAppState extends State<MyApp> {
           'selectaddress_screen_design': (context) =>
               const SelecteAddressScreen(),
           'cartsummary_screen': (context) => const CartSummaryScreen(),
+          'claim_management':(context)=> const ClaimManagementScreen(),
+           'claim-screen':(context) => const ClaimScreen(),
+         //  'getclaim-screen':(context) => const GetClaimManagementScreen(),
+           'getclaim-screen': (context) {
+
+           String id = ModalRoute.of(context).settings.arguments.toString();
+           return GetClaimManagementScreen(
+           id: id,
+ 
+           );
+           },
+
         },
       ),
     );

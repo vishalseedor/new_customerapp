@@ -263,6 +263,7 @@ class _FilterSCreenState extends State<FilterSCreen> {
                                 endprice: endprice.toString(),
                                 listOfId: cate_id)
                             .then((value) {
+                              cate_id.clear();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (ctx) => const FilterProductScreen()));
                         });

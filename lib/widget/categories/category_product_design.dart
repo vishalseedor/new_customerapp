@@ -82,7 +82,7 @@ class _CategoryProductDesignState extends State<CategoryProductDesign> {
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: size.height * 0.15,
+              height: size.height * 0.11,
               width: size.width,
               decoration: BoxDecoration(
                 color: Colors.white,

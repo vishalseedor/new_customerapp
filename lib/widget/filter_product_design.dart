@@ -221,7 +221,7 @@ class _FilterProductDesignState extends State<FilterProductDesign> {
                   ),
                   Text(
                     product.taxtext ?? '',
-                    style: TextStyle(color: CustomColor.orangecolor),
+                    style: TextStyle(color: CustomColor.orangecolor,fontSize: 12),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

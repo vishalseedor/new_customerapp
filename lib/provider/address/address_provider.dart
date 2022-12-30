@@ -96,7 +96,7 @@ class AddressProvider with ChangeNotifier {
             country: otherAddress[i]['country_id'][1].toString(),
             countryId: otherAddress[i]['country_id'][0].toString(),
             houseNumber: otherAddress[i]['street2'].toString(),
-            landmark: otherAddress[i]['city'].toString(),
+            // landmark: otherAddress[i]['city'].toString(),
             name: otherAddress[i]['name'].toString(),
             phoneNumber: otherAddress[i]['mobile'].toString(),
             pincode: otherAddress[i]['zip'].toString(),
@@ -106,8 +106,10 @@ class AddressProvider with ChangeNotifier {
           ));
           print(otherAddress[i]['state_id'][0].toString() + 'state id va ');
           print(otherAddress[i]['country_id'][0].toString()+'country id vaa');
-          print(jsonData);
-
+          print(otherAddress[i]['state_id'][1].toString() + 'state id va ');
+          print(otherAddress[i]['country_id'][1].toString()+'country id vaa');
+          // print(jsonData);
+    print(otherAddress.toString()+'llllllllllllll');
           // print('success');
         }
         _address = loadData;
@@ -115,7 +117,7 @@ class AddressProvider with ChangeNotifier {
         print('add res data ' + _address.toString());
         notifyListeners();
       } else {
-        print(response.reasonPhrase);
+        print(response.reasonPhrase + "newdawdadad");
 
         _isErrorLoading = true;
         notifyListeners();
@@ -156,7 +158,7 @@ class AddressProvider with ChangeNotifier {
         "zip": address.pincode, 
         "clientid": client_id
       });
-      print(body.toString());
+      print(body.toString()+'llllllllllllllllll');
       var response = await http.post(
           Uri.parse(
               'http://eiuat.seedors.com:8290/customer-app/create-address'),
@@ -168,7 +170,7 @@ class AddressProvider with ChangeNotifier {
         snackBar.successsnackbar(
             context: context, text: 'Address Updated Successfully');
       } else {
-        print(response.reasonPhrase);
+        print(response.reasonPhrase+'country add');
         snackBar.generalSnackbar(
             context: context, text: 'Something went wrong');
       }
@@ -272,6 +274,8 @@ class AddressProvider with ChangeNotifier {
   }) async {
     print('state api is loading ---->1');
     try {
+      _isLoading = true;
+      notifyListeners();
       listAdds = [];
       var headers = {'Content-Type': 'application/json'};
       var body = json.encode(
@@ -287,6 +291,7 @@ class AddressProvider with ChangeNotifier {
       var jsonData = json.decode(response.body);
       print(jsonData);
       if (response.statusCode == 200) {
+        _isLoading=false;
         for (var i = 0; i < jsonData.length; i++) {
           listAdds.add(CountryDropModel(
               id: jsonData[i]['id'].toString(),
@@ -305,6 +310,7 @@ class AddressProvider with ChangeNotifier {
       // _errorMessage = 'Something went wrong';
       notifyListeners();
     }
+    
   }
 
   List<DropDownModel> _stateDropDown = [];
@@ -322,6 +328,7 @@ class AddressProvider with ChangeNotifier {
     print('state api is loading ---->1');
     try {
       listAdd = [];
+    
       var headers = {
         'Content-Type': 'application/json',
         'Cookie': 'session_id=45d1faac162ae021674fb5e470f347e3b66e3df8'
@@ -345,6 +352,7 @@ class AddressProvider with ChangeNotifier {
       var jsonData = json.decode(response.body);
       print(jsonData);
       if (response.statusCode == 200) {
+        _isLoading=false;
         print(response.body.toString()+'response value');
         for (var i = 0; i < jsonData.length; i++) {
           listAdd.add(DropDownModel(
@@ -417,7 +425,7 @@ class AddressProvider with ChangeNotifier {
         pincode: address.pincode,
         houseNumber: address.houseNumber,
         area: address.area,
-        landmark: address.landmark,
+        // landmark: address.landmark,
         town: address.town,
        
         countryId: address.countryId,

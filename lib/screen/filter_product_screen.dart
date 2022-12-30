@@ -16,7 +16,7 @@ class FilterProductScreen extends StatelessWidget {
     final filter = Provider.of<FilterProvider>(context);
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Filter Product'),
+          title: const Text('Filter Products'),
         ),
         body: filter.filterProducts.isEmpty
             ? const FilterEmptyScreen()

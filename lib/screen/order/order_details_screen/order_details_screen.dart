@@ -5,18 +5,27 @@ import 'package:food_app/const/theme.dart';
 import 'package:food_app/models/review.dart';
 
 import 'package:food_app/provider/address/address_data.dart';
+import 'package:food_app/provider/claim_management_provider.dart';
 
 import 'package:food_app/provider/order_provider.dart';
+import 'package:food_app/screen/claim_listview.dart';
+import 'package:food_app/screen/claim_management_screen.dart';
+import 'package:food_app/screen/get_claim_screen.dart';
 import 'package:food_app/screen/google_maps/googletracking.dart';
+import 'package:food_app/screen/order/order_screen.dart';
 
 import 'package:food_app/screen/review/review_screen.dart';
+import 'package:food_app/services/snackbar.dart';
+import 'package:food_app/widget/claim_design.dart';
 
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../provider/cart_provider.dart';
+import '../../../provider/product_provider.dart';
 
 class OrderDetailsSCreen extends StatefulWidget {
+ 
   const OrderDetailsSCreen({Key key}) : super(key: key);
   static const routeName = 'order-details';
 
@@ -40,6 +49,7 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
       reviewTitle: 'wanted',
       start: '4');
   final TextEditingController _reviewTextController = TextEditingController();
+  GlobalSnackBar snackBar = GlobalSnackBar();
 
   @override
   void dispose() {
@@ -51,8 +61,10 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
   Widget build(BuildContext context) {
     final orderId = ModalRoute.of(context).settings.arguments as String;
     final data = Provider.of<CartProvider>(context, listen: false);
-    final order = Provider.of<OrderProvider>(context);
+    final order = Provider.of<OrderProvider>(context,listen: false);
     final orderData = order.findById(orderId);
+    final claim=Provider.of<ClaimManagementProvider>(context,listen: false);
+    final product =Provider.of<ProductProvider>(context,listen: false);
 
     // final cart = Provider.of<CartProvider>(context);
     // final review = Provider.of<ReviewProvider>(context, listen: false);
@@ -60,6 +72,8 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
 
     final address = Provider.of<AddressData>(context)
         .updatePickUpLocation(orderData.address);
+
+        
 
     return Scaffold(
         appBar: AppBar(
@@ -75,112 +89,174 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
         ),
         body: SingleChildScrollView(
           child: Container(
+          
             margin: const EdgeInsets.all(15),
             child: Column(
               children: [
                 SizedBox(
                   width: size.width,
+                  
                   child: Text('Your Order',
                       style: Theme.of(context).textTheme.bodyText2),
                 ),
                 const Divider(
                   color: CustomColor.grey300,
                 ),
+           
                 Column(
                   children: List.generate(
+                    
                       orderData.cart.length,
-                      (index) => ListTile(
-                            // leading: Image.network(
-                            //   // orderData.cart[index].imageUrl ??
-                            //   'https://img.huffingtonpost.com/asset/5c1224861f00001b0826a6cb.jpeg?ops=scalefit_720_noupscale&format=webp',
-                            //   width: size.width * 0.21,
-                            //   height: size.height * 0.12,
-                            //   fit: BoxFit.cover,
-                            // ),
-                            title: Text(
-                              orderData.cart[index].title ?? 'null',
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                            subtitle: Text(
-                              'Quantity : ' +
-                                      orderData.cart[index].quantity
-                                          .toString() ??
-                                  '10',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            trailing: Column(
-                              children: [
-                                Text(
-                                  '₹ ' +
-                                          orderData.cart[index].price
+                      (index) => Column(
+                        children: [
+                          ListTile(
+                                // leading: Image.network(
+                                //   // orderData.cart[index].imageUrl ??
+                                //   'https://img.huffingtonpost.com/asset/5c1224861f00001b0826a6cb.jpeg?ops=scalefit_720_noupscale&format=webp',
+                                //   width: size.width * 0.21,
+                                //   height: size.height * 0.12,
+                                //   fit: BoxFit.cover,
+                                // ),
+                                title: 
+
+                                  
+                                    Text(
+                                      orderData.cart[index].title ?? 'null',
+                                      style: Theme.of(context).textTheme.subtitle2,
+                                    ),
+                                    
+                              
+                                subtitle: Text(
+                                  'Quantity : ' +
+                                          orderData.cart[index].quantity
                                               .toString() ??
-                                      '20',
+                                      '',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
-                                GestureDetector(
-                                  // ignore: void_checks
-                                  onTap: () {
-                                    return showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                        title: const Text("Product Review"),
-                                        content: const ReviewScreen(),
-                                        actions: <Widget>[
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text("Cancel"),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              // review.addreview(reviewProduct);
-                                              fToast.showToast(
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 10,
-                                                      horizontal: 15),
-                                                  decoration: BoxDecoration(
-                                                      color: CustomColor
-                                                          .orangecolor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
-                                                  child: Text(
-                                                      'Product Review Added Successfull',
-                                                      style: CustomThemeData()
-                                                          .drawerStyle()),
-                                                ),
-                                                gravity: ToastGravity.BOTTOM,
-                                                toastDuration:
-                                                    const Duration(seconds: 2),
-                                              );
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text("Add"),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    // decoration: BoxDecoration(
-                                    //     border: Border.all(
-                                    //         color: CustomColor.orangecolor),
-                                    //     borderRadius: BorderRadius.circular(0)),
-                                    child: Text(
-                                      '',
-                                      style:
-                                          Theme.of(context).textTheme.caption,
+                                
+                                trailing: Column(
+                                  children: [
+                                    Text(
+                                      '₹ ' +
+                                              orderData.cart[index].price
+                                                  .toString() ??
+                                          '',
+                                      style: Theme.of(context).textTheme.caption,
                                     ),
-                                  ),
+                                  
+                                    // GestureDetector(
+                                    //   // ignore: void_checks
+                                    //   onTap: () {
+                                    //     return showDialog(
+                                    //       context: context,
+                                    //       builder: (ctx) => AlertDialog(
+                                    //         title: const Text("Product Review"),
+                                    //         content: const ReviewScreen(),
+                                    //         actions: <Widget>[
+                                    //           ElevatedButton(
+                                    //             onPressed: () {
+                                    //               Navigator.of(context).pop();
+                                    //             },
+                                    //             child: const Text("Cancel"),
+                                    //           ),
+                                    //           ElevatedButton(
+                                    //             onPressed: () {
+                                    //               // review.addreview(reviewProduct);
+                                    //               fToast.showToast(
+                                    //                 child: Container(
+                                    //                   padding: const EdgeInsets
+                                    //                           .symmetric(
+                                    //                       vertical: 10,
+                                    //                       horizontal: 15),
+                                    //                   decoration: BoxDecoration(
+                                    //                       color: CustomColor
+                                    //                           .orangecolor,
+                                    //                       borderRadius:
+                                    //                           BorderRadius.circular(
+                                    //                               15)),
+                                    //                   child: Text(
+                                    //                       'Product Review Added Successfull',
+                                    //                       style: CustomThemeData()
+                                    //                           .drawerStyle()),
+                                    //                 ),
+                                    //                 gravity: ToastGravity.BOTTOM,
+                                    //                 toastDuration:
+                                    //                     const Duration(seconds: 2),
+                                    //               );
+                                    //               Navigator.of(context).pop();
+                                    //             },
+                                    //             child: const Text("Add"),
+                                    //           ),
+                                    //         ],
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    //   child: Container(
+                                    //     padding: const EdgeInsets.symmetric(
+                                    //         horizontal: 10),
+                                    //     // decoration: BoxDecoration(
+                                    //     //     border: Border.all(
+                                    //     //         color: CustomColor.orangecolor),
+                                    //     //     borderRadius: BorderRadius.circular(0)),
+                                    //     child: Text(
+                                    //       '',
+                                    //       style:
+                                    //           Theme.of(context).textTheme.caption,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                  
                                 ),
-                              ],
-                            ),
-                          )),
+                                
+                            
+                                
+                                
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      height: size.height*0.03,
+                                      width: size.width*0.2,
+                                      child: ElevatedButton(
+                                         child:Text('Claim Details',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 8),),
+                                        
+
+                                        onPressed: ()async{
+                                          
+                                           
+                                         print('ccvcvcvcvcvcv---');
+                                             
+                                        await Provider.of<ClaimManagementProvider>(context,listen: false).GetClaimManagementData(context: context,productid:orderData.cart[index].id ).then((value) {
+                                         Navigator.push(context,MaterialPageRoute(builder:(context)=>ClaimScreen()));
+                                       }
+                                       
+                                       );
+
+                                          
+                                   
+                                 
+                                      },),
+                                    ),
+                                    SizedBox(
+                                         height: size.height*0.03,
+                                      width: size.width*0.2,
+
+                                      child: ElevatedButton(onPressed: ()async{
+                                        print(orderData.cart[index].price.toString()+'ggggghhhhhkkkk');
+
+                                     
+                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>ClaimManagementScreen(id:  orderData.cart[index].id)));
+                                      }, child:Text('Claim',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 8),)),
+                                    )
+                                  ],
+                                ),
+                              )
+                        ],
+                      )),
                 ),
                 const Divider(
                   color: CustomColor.grey300,
@@ -282,9 +358,10 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                         ],
                       ),
                       SizedBox(
-                        width: size.width,
+                         width: size.width,
+                          height: size.height*0.04,
                         child: ElevatedButton(
-                          child: const Text('Track your Order in Google Map'),
+                          child: const Text('Track your Order in Google Map',style: TextStyle(fontWeight: FontWeight.bold),),
                           onPressed: () {
                             Navigator.of(context)
                                 .pushNamed(GoogleMapTracking.routeName);
@@ -328,7 +405,8 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                         ',' +
                         orderData.address.area +
                         ',' +
-                        orderData.address.landmark +
+                        // orderData.address.landmark +
+                        orderData.address.town +
                         ',' +
                         orderData.address.pincode +
                         ',' +

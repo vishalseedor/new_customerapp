@@ -344,8 +344,8 @@ class CartProvider with ChangeNotifier {
           body: body,
           headers: header);
       if (response.statusCode == 202) {
-        globalSnackBar.generalSnackbar(
-            context: context, text: 'Your cart is clear');
+        // globalSnackBar.generalSnackbar(
+        //     context: context, text: 'Your cart is clear');
         product.clearcartcount();
         _cartproduct.clear();
         _carttotalProductData.clear();
@@ -701,6 +701,7 @@ class CartProvider with ChangeNotifier {
     print('product get working good --->> 3');
     if (response.statusCode == 200) {
       _carttotalProductData = [];
+      
       cartProductids = [];
       cartPrice = [];
       cartQuantity = [];
@@ -709,6 +710,7 @@ class CartProvider with ChangeNotifier {
       productTemplateId;
       int quantity;
       for (var i = 0; i < jsondata.length; i++) {
+        cartCharges = [];
         for (var j = 0; j < cartQuantityNew.length; j++) {
           if (jsondata[i]['id'].toString() == cartQuantityNew[j].id) {
             quantity = cartQuantityNew[j].quantity;
@@ -720,7 +722,33 @@ class CartProvider with ChangeNotifier {
         priceInclude.add(jsondata[i]['price_included'].toString());
         cartProductname.add(jsondata[i]['display_name'].toString());
         productTemplateId = jsondata[i]['product_tmpl_id'][0];
-        await getAdditionalCharge(ids: jsondata[i]['product_tmpl_id'][0]);
+        await getAdditionalCharge(ids: jsondata[i]['product_tmpl_id'][0]).then((value) {
+          print(value[1].toString() + '--->> reponse data for delivery item');
+          print(value[0].toString() + '--->> reponse data for delivery response');
+          if(value[0] == 200){
+            print('function Start for additional charge');
+            if(value[1].isNotEmpty){
+               print('function Start for additional charge is not empty');
+               for (var k = 0; k < value[1].length; k++) {
+              cartCharges.add(CartCharges(
+              id: value[1][k]['product_id'][0].toString(),
+              price: value[1][k]['price'].toString(),
+              name: value[1][k]['name'].toString()));
+              print('------>>>> single product' + value[1][k]['product_id'][0].toString());
+               print('------>>>> single product' +  value[1][k]['price'].toString());
+                print('------>>>> single product' +  value[1][k]['name'].toString());
+            }
+           
+            }else{
+               print('function Start for additional charge is empty');
+              cartCharges = [];
+            }
+            print('additonal charge is completed --->>');
+             cartTotalProductdata.add(CartTotalProductModal(id: jsondata[i]['id'].toString(), title: jsondata[i]['display_name'].toString(), price:jsondata[i]['standard_price_tax_included'].toString(), priceincluds:  jsondata[i]['price_included'].toString(), cartCharge: cartCharges,quantity: quantity));
+          notifyListeners();
+          }
+          
+        });
       }
       print('product get working good --->> 4');
 
@@ -751,29 +779,37 @@ class CartProvider with ChangeNotifier {
 
     var jsondata = json.decode(response.body);
     print(jsondata);
+    
     if (response.statusCode == 200) {
-      print('delivery get working good --->> 3');
-      print(jsondata.isEmpty.toString() + 'is empty');
-      if (jsondata.isEmpty) {
-        print('loop is not working working');
-        cartCharges.add(CartCharges(id: '', price: '', name: 'summa'));
-        totalCartProductcharge.add(cartCharges);
-        print('--->>> dot' + totalCartProductcharge[0].toList().toString());
-        cartCharges = [];
-      } else {
-        print('loop is working working');
-        cartCharges = [];
+    
+      // print('delivery get working good --->> 3');
+      // print(jsondata.isEmpty.toString() + 'is empty');
+      // if (jsondata.isEmpty) {
+      //   cartCharges = [];
+      //   print('loop is not working working');
+      //   cartCharges.add(CartCharges(id: '', price: '', name: 'summa'));
+      //   totalCartProductcharge.add(cartCharges);
+      //   print('--->>> dot' + totalCartProductcharge[0].toList().toString());
+      //   cartCharges = [];
+      // } else {
+      //   print('loop is working working');
+       
 
-        for (var i = 0; i < jsondata.length; i++) {
-          cartCharges.add(CartCharges(
-              id: jsondata[i]['product_id'][0].toString(),
-              price: jsondata[i]['price'].toString(),
-              name: jsondata[i]['name'].toString()));
-          totalCartProductcharge.add(cartCharges);
-        }
-      }
-      print('delivery get working good --->> 4');
-      notifyListeners();
+      //   for (var i = 0; i < jsondata.length; i++) {
+      //      cartCharges = [];
+      //     cartCharges.add(CartCharges(
+      //         id: jsondata[i]['product_id'][0].toString(),
+      //         price: jsondata[i]['price'].toString(),
+      //         name: jsondata[i]['name'].toString()));
+      //     totalCartProductcharge.add(cartCharges);
+          
+         
+
+      //   }
+      // }
+      // print('delivery get working good --->> 4');
+      // notifyListeners();
+      return [response.statusCode, jsondata];
     } else {
       print(response.reasonPhrase);
     }
@@ -824,19 +860,21 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> totalCartData() async {
-    for (var i = 0; i < prodId.length; i++) {
-      _carttotalProductData.add(CartTotalProductModal(
-          id: cartProductids[i].toString(),
-          quantity: int.parse(cartQuantity[i].toString()),
-          title: cartProductname[i].toString(),
-          price: cartPrice[i].toString(),
-          cartCharge: totalCartProductcharge[i].toSet().toList()));
+  //   for (var i = 0; i < prodId.length; i++) {
+     
+  //     _carttotalProductData.add(CartTotalProductModal(
+  //         id: cartProductids[i].toString(),
+  //         quantity: int.parse(cartQuantity[i].toString()),
+  //         title: cartProductname[i].toString(),
+  //         price: cartPrice[i].toString(),
+  //         cartCharge: totalCartProductcharge[i].toSet().toList()));
+  //         print( totalCartProductcharge[i].toString() + '---->>> total cart charge');
 
-      print(
-          _carttotalProductData.length.toString() + 'vanthuru da vanthuruuuu');
-      print(_carttotalProductData[i].cartCharge.length.toString() +
-          'vanthuru da vanthuruuuu cart charge');
-    }
+  //     print(
+  //         _carttotalProductData.length.toString() + 'vanthuru da vanthuruuuu');
+  //     print(_carttotalProductData[i].cartCharge.length.toString() +
+  //         'vanthuru da vanthuruuuu cart charge');
+  //   }
   }
 }
 

@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:food_app/models/cart.dart';
+import 'package:food_app/screen/cart_screen/empty_cart_screen.dart';
 import 'package:food_app/screen/cart_screen/selected_address_screen.dart';
+import 'package:food_app/screen/google_maps/progress_dialog.dart';
 import 'package:food_app/services/dialogbox.dart';
 import 'package:food_app/widget/cart_product_wid/cartproduct_summary_design.dart';
 import 'package:provider/provider.dart';
@@ -32,12 +35,15 @@ class CartSummaryScreen extends StatefulWidget {
 }
 
 class _CartSummaryScreenState extends State<CartSummaryScreen> {
+   bool loading = false;
   Addresss selectedAddress;
   bool onlinepayment = true;
   bool offlinepayment = false;
   bool screenRefresh = false;
   Timer timer;
   bool checkDelivery = false;
+
+ 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -65,6 +71,7 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
   }
 
   Future<void> orderApiCall() async {
+  
     print('start data + -->');
 
     final data = Provider.of<CartProvider>(context, listen: false);
@@ -147,6 +154,7 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
     //     selectedAddress.addresstype);
     //uncommend this //
     order.postOrderApi(
+      
         amount: data.totalAmount.toString(),
         grandTotal: data.totalprice.toString(),
         paymentType: onlinepayment == true ? 'Pay By Card' : 'Cash on delivery',
@@ -162,6 +170,7 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<ProductProvider>(context, listen: false);
+    final order=Provider.of<OrderProvider>(context,listen: false);
     final cart = Provider.of<CartProvider>(context, listen: false);
     final address = Provider.of<AddressProvider>(context).address;
     final data = Provider.of<CartProvider>(context);
@@ -169,6 +178,7 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
     final charge = Provider.of<CartProvider>(context).cartCharges;
     void paywithcard(String amount) async {
       try {
+        
         // ProgressDialog dialog = ProgressDialog(context: context);
         print('payment gate way started');
         await StripeServices.payment(amount).then((value) {
@@ -238,10 +248,16 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
     print('grandprice ${data.totalprice}');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Summary'),
+        title:order.islOading?Center(): 
+        const Text('Summary'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      
+
+      body:order.islOading?Center(child: ProgressDialog(message: "Loading Please wait"),
+      
+      ):
+       SingleChildScrollView(
         child: Column(
           children: [
             Container(
@@ -342,6 +358,7 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
                                     index: index,
                                     productId: widget.cartProduct[index].id,
                                     screenRefresh: screenRefresh,
+                                    
                                   ))),
                         ),
                       )),
@@ -677,8 +694,10 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
       bottomNavigationBar: SizedBox(
         width: size.width,
         height: size.height * 0.065,
-        child: ElevatedButton(
+        child:order.islOading?Center():
+         ElevatedButton(
             onPressed: () {
+          
               if (address.isEmpty) {
                 _services.addressDialog(
                     context: context,
@@ -692,8 +711,11 @@ class _CartSummaryScreenState extends State<CartSummaryScreen> {
                   cashOnDelivery(data.totalprice.toString());
                 }
               }
+            
             },
             child: Text(address.isEmpty ? 'Select Your Address' : 'Check Out')),
+            
+            
       ),
     );
   }

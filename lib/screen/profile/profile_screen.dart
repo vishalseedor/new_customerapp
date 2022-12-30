@@ -23,6 +23,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final data = Provider.of<UserDetails>(context);
+
     @override
         // final profile = Provider.of<ProfileProvider>(context).profile;
         // final addressData = Provider.of<AddressProvider>(context).address;
@@ -85,7 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return const Padding(
                       padding: EdgeInsets.only(bottom: 60),
                       child: Center(
-                        child: Text('No data avalible'),
+                        child: 
+                        Text('No data avalible'),
                       ),
                     );
                   } else if (snapshot.hasData) {
@@ -93,9 +96,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(children: [
                         CircleAvatar(
                           backgroundColor: CustomColor.blackcolor,
-                          backgroundImage:
-                              AssetImage('Assets/Images/person.webp'),
-                          radius: 80,
+                          backgroundImage:MemoryImage(data.imageUrl),
+                          radius: 90,
+                          //     AssetImage('Assets/Images/person.webp'),
+                          // radius: 80,
                         ),
                         SizedBox(
                           height: size.height * 0.05,
@@ -117,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         profileText(
                             context: context,
-                            title: 'Seedor Name :',
+                            title: 'Plan Name :',
                             subtitle: userDetails.seedorName),
                         SizedBox(
                           height: size.height * 0.03,
@@ -192,6 +196,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .headline4,
                                           overflow: TextOverflow.ellipsis,
                                         ),
+                                        Text( snapshot.data.state,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline4,
+                                          overflow: TextOverflow.ellipsis,),
+                                            Text( snapshot.data.country,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline4,
+                                          overflow: TextOverflow.ellipsis,),
+                                          Text(snapshot.data.pincode,
+                                          style: Theme.of(context).textTheme.headline4,)
                                         // Text(
                                         //   addressData.first.town + ',',
                                         //   style:
@@ -292,7 +308,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Text(
             subtitle,
             style: Theme.of(context).textTheme.headline4,
-            overflow: TextOverflow.ellipsis,
+           
+          
           ),
         ),
       ],

@@ -60,6 +60,7 @@ class FilterProvider with ChangeNotifier {
       _loadingSpinner = true;
       notifyListeners();
       List<Product> _loadedProduct = [];
+      _filterProduct = [];
       var headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -79,6 +80,7 @@ class FilterProvider with ChangeNotifier {
       print(jsonData);
       if (response.statusCode == 200) {
         if (jsonData.isEmpty) {
+         
           _loadingSpinner = false;
           notifyListeners();
         } else {
@@ -107,6 +109,7 @@ class FilterProvider with ChangeNotifier {
               timer: 40,
               title: jsonData[i]['display_name'].toString(),
               taxtext: jsonData[i]['price_included'].toString(),
+              varient: jsonData[i]['product_variant_id'][0]
             ));
           }
           _filterProduct = _loadedProduct;

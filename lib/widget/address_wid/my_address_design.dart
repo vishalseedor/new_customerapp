@@ -59,7 +59,7 @@ class _MyAddressDesignState extends State<MyAddressDesign> {
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(
-                    '${address.town},${address.landmark},${address.state},${address.country},${address.pincode}',
+                    '${address.town},${address.state},${address.country},${address.pincode}',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(

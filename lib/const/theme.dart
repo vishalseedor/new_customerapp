@@ -36,6 +36,8 @@ class CustomThemeData {
               color: CustomColor.blackcolor,
               fontSize: 18,
               fontWeight: FontWeight.bold),
+
+
               //   button: TextStyle(
               // color: CustomColor.bluecolor,
               // fontSize: 18,
@@ -52,6 +54,8 @@ class CustomThemeData {
             color: CustomColor.grey500,
             fontSize: 16,
           ),
+          
+          
           caption: TextStyle(
             color: CustomColor.grey400,
             fontSize: 13,

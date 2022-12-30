@@ -112,7 +112,7 @@ class AuthProvider with ChangeNotifier {
         prefs.setString('email', email);
         prefs.setString('id', jsonData['primary_profile'][0]['id'].toString());
         prefs.setString('image_location',
-            jsonData['primary_profile'][0]['image_location'].toString());
+            jsonData['primary_profile'][0]['image_1024'].toString());
         prefs.setString(
             'mobile', jsonData['primary_profile'][0]['mobile'].toString());
         prefs.setString(
@@ -130,10 +130,16 @@ class AuthProvider with ChangeNotifier {
         prefs.setString(
             'city', jsonData['primary_profile'][0]['city'].toString());
         prefs.setString('image',
-            jsonData['primary_profile'][0]['image_location'].toString());
+            jsonData['primary_profile'][0]['image_1024'].toString()); 
         print(body.toString());
 
-        Navigator.of(context).pushNamed(BottomAppScreen.routeName);
+           Navigator.of(context).pushAndRemoveUntil(
+             MaterialPageRoute(builder: (ctx) => BottomAppScreen()),
+              (route) => false);
+              
+             notifyListeners();
+              
+
         await globalSnackBar.successsnackbar(
             context: context, text: 'Logged in successfull');
       } else {
@@ -184,7 +190,7 @@ class AuthProvider with ChangeNotifier {
       print(email);
       code = response.statusCode;
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200){
         // await globalSnackBar.successsnackbar(
         //     context: context,
         //     text: 'Password reset instructions have been sent to email!');

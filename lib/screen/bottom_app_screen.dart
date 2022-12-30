@@ -30,11 +30,11 @@ class _BottomAppScreenState extends State<BottomAppScreen> {
             actions: [
               ElevatedButton(
                 child: const Text('No'),
-                onPressed: () => Navigator.pop(context, false),
+                onPressed: () => Navigator.of(context).pop(false)
               ),
               ElevatedButton(
                 child: const Text('Yes'),
-                onPressed: () => Navigator.pop(context, true),
+                onPressed: () => Navigator.of(context).pop(true)
               ),
             ],
           ));

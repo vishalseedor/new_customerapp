@@ -11,6 +11,7 @@ class OrderUiDesign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final order = Provider.of<OrderModel>(context);
     // final val = order.cart;
     // DateTime datetime = DateTime.now();
@@ -70,11 +71,13 @@ class OrderUiDesign extends StatelessWidget {
                         OrderDetailsSCreen.routeName,
                         arguments: order.id);
                   },
-                  child: const Text('More Details',
-                      style: TextStyle(
-                          color: CustomColor.orangecolor,
-                          fontSize: 13,
-                          decoration: TextDecoration.underline)),
+                  child: const ElevatedButton( child:Text('More Details',
+                  style: TextStyle(color: CustomColor.whitecolor,fontSize: 9,fontWeight: FontWeight.bold),)),
+                  // child: const Text('More Details',
+                  //     style: TextStyle(
+                  //         color: CustomColor.orangecolor,
+                  //         fontSize: 13,
+                  //         decoration: TextDecoration.underline)),
                 ),
               ],
             ),

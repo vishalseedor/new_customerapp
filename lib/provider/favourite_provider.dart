@@ -43,7 +43,7 @@ class FavouriteProvider with ChangeNotifier {
   }
 
   Future<String> addFavouriteProductPostApi(
-      {BuildContext context, String productId}) async {
+      {BuildContext context, String productId})async{
     String statesCodec = '0';
     try {
       final data = Provider.of<UserDetails>(context, listen: false);

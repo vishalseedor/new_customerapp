@@ -26,7 +26,8 @@ class OrderProvider with ChangeNotifier {
     return _isLoading;
   }
 
-  List<OrderModel> get orderproduct {
+  List<OrderModel>
+   get orderproduct {
     return [..._orderProduct];
   }
 
@@ -90,7 +91,7 @@ class OrderProvider with ChangeNotifier {
                 addresstype: addrData[7].toString(),
                 area: addrData[2].toString(),
                 houseNumber: addrData[2].toString(),
-                landmark: addrData[5].toString(),
+                // landmark: addrData[5].toString(),
                 id: '',
                 name: addrData[0].toString(),
                 phoneNumber: addrData[4].toString(),
@@ -110,6 +111,7 @@ class OrderProvider with ChangeNotifier {
                   price: decoded['Order']['LineItems'][j]['price'].toString(),
                   quantity:
                       decoded['Order']['LineItems'][j]['quantity'].toString()));
+                  
             }
 
             print('order cart data value -->>' + _cartData.toList().toString());
@@ -146,6 +148,7 @@ class OrderProvider with ChangeNotifier {
               datetime: jsonData['orders']['order'][i]['date'].toString(),
               itemTotal: 0.0,
               grandTotal: decoded['Order']['grandTotal'].toString(),
+             
               payment: decoded['Order']['paymentType'].toString(),
               shipping: double.parse(decoded['Order']['shipping']),
               deliveryStatus:
@@ -181,6 +184,8 @@ class OrderProvider with ChangeNotifier {
     String additionalCharge,
   }) async {
     try {
+       _isLoading = true;
+       notifyListeners();
       final data = Provider.of<UserDetails>(context, listen: false);
       final product = Provider.of<ProductProvider>(context, listen: false);
       //final navigation = Provider.of<BottomNavigationBarProvider>(context);
@@ -189,6 +194,7 @@ class OrderProvider with ChangeNotifier {
       var headers = {
         'Content-Type': 'application/json',
       };
+      
       var body = json.encode({
         "params": {
           "orderid": "",
@@ -212,7 +218,8 @@ class OrderProvider with ChangeNotifier {
       print(response.body);
       print('http://eiuat.seedors.com:8290/seedor-api/order/create');
       if (response.statusCode == 200) {
-        product.clearcartcount();
+   
+        product.clearcartcount(); 
         for (var i = 0; i < product.product.length; i++) {
           print(product.product[i].productId);
           if (product == product) {
@@ -223,6 +230,7 @@ class OrderProvider with ChangeNotifier {
         
 
         print('order successfully placed');
+      
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const SizedBox(
             height: 40,
@@ -230,6 +238,7 @@ class OrderProvider with ChangeNotifier {
               child: Text('Order Placed Successfull'),
             ),
           ),
+          
 
           margin: const EdgeInsets.all(10),
           shape:
@@ -242,18 +251,31 @@ class OrderProvider with ChangeNotifier {
           //   label: 'View cart',
           //   onPressed: () {},
           // ),
-        ));
-      Navigator.pop(context);
+        )
+       
+        );
+     
+     Navigator.pop(context);
+   
+   
+      
 
        // Navigator.of(context).pushNamed(OrderScreen.routeName);
        // navigation.currentIndex=2;
         
-      } else {
+      } 
+      
+      else {
+   
         print(response.reasonPhrase);
       }
     } catch (e) {
-      
+     
+
+   
     }
+           _isLoading = false;
+      notifyListeners();
   }
 
   void addorder({
@@ -283,12 +305,15 @@ class OrderProvider with ChangeNotifier {
       deliveryStatus: deliveryStatus,
       // address: deliveryAddress,
     );
+    
     _orderProduct.add(order);
     notifyListeners();
   }
 }
 
+
 class CartData {
+  
   final String id;
   final String title;
   final String price;
@@ -301,3 +326,4 @@ class CartData {
       @required this.price,
       @required this.quantity});
 }
+
